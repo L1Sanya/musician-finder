@@ -2,7 +2,7 @@ version: '3'
 services:
     php:
         build:
-            context: ../musicianFinder/docker/php
+            context: docker/php
         volumes:
             - '.:/var/www/html'
         restart: always
@@ -26,6 +26,8 @@ services:
     db:
         image: postgres:14.10
         restart: always
+        volumes:
+            - ./postgres-data:/var/lib/postgresql/data
         environment:
             - POSTGRES_HOST=${DB_HOST}
             - POSTGRES_DB=${DB_DATABASE}

@@ -60,4 +60,9 @@ class CustomAuthController extends Controller
         Auth::logout();
         return Redirect('login');
     }
+
+    public function main()
+    {
+
+    }
 }
