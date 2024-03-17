@@ -10,20 +10,18 @@
 <body>
 <div class="hero" id="top">
     <div class="hero-image"></div>
-    <h1>Do more, with less.</h1>
+    <h1>Welcome Musicians!</h1>
 </div>
 <div class="navbar-wrapper">
     <nav>
         <div class="content">
             <ul>
-                <li class="action-item"><a href="#top"><p>P</p></a></li>
-                <li><a href="#vision"><p>Vision</p></a></li>
-                <li><a href="#product"><p>Product</p></a></li>
-                <li><a href="#team"><p>Team</p></a></li>
+                <li><a href=""><p>Place announcement</p></a></li>
+                <li><a href=""><p>Announcements</p></a></li>
             </ul>
             <ul class="right">
-                <li><a href="#"><p>Log in</p></a></li>
-                <li class="action-item"><a href="#"><p>Sign up</p></a></li>
+                <li><a href="login"><p>Log in</p></a></li>
+                <li class="action-item"><a href="register"><p>Sign up</p></a></li>
             </ul>
         </div>
     </nav>
@@ -86,10 +84,11 @@
 
 <style>
     .hero-image {
-        top: -20rem;
-        bottom: -20rem;
-        width: 100%;
-        background-image: url(http://www.howlatthemoon.com/wp-content/uploads/2015/09/nyc-skyline.jpg);
+        top: 1rem;
+        bottom: 2rem;
+        left: 30rem;
+        width: 50%;
+        background-image: url(https://newmusicusa.org/wp-content/uploads/2012/10/musicians_top.jpg);
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center center;
@@ -100,8 +99,8 @@
     .hero h1 {
         position: relative;
         text-align: center;
-        color: white;
-        padding-top: 20rem;
+        color: black;
+        padding-top: 1rem;
         z-index: 2;
     }
 
@@ -142,10 +141,10 @@
     /* Base element styles */
     body, html {
         width: 100%;
-        height: 100%;
+        height: 50%;
         font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
         font-size: 16px;
-        color: #222222; }
+        color: black; }
 
     a, a:hover {
         color: inherit;
@@ -209,16 +208,16 @@
         cursor: pointer;
         background-color: #eee; }
     nav ul li.action-item {
-        color: white;
-        background-color: #4155E8; }
+        color: black;
+        background-color: white; }
     nav ul li.action-item:hover {
-        color: white;
-        background-color: #3B4CD1; }
+        color: black;
+        background-color: #eee; }
     nav ul.right { float:right; }
 </style>
 
 <footer>
-    <p><a href="#">built with ❤ in NYC </a></p>
+    <p><a href="#"> L1Sanya's </a></p>
 </footer>
 <!-- jQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>

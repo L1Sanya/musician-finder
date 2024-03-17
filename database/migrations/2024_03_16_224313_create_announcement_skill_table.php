@@ -11,13 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('requirements', function (Blueprint $table) {
+        Schema::create('announcement_skill', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('creator_id')->constrained('users');
-            $table->foreignId('skill_id')->constrained('skills');
-            $table->string('position_title');
-            $table->text('description');
-            $table->string('location');
             $table->timestamps();
         });
     }
@@ -27,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('requirements');
+        Schema::dropIfExists('announcement_skill');
     }
 };

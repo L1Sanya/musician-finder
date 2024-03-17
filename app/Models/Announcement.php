@@ -10,6 +10,8 @@ class Requirement extends Model
     use HasFactory;
 
     protected $fillable = [
+        'title',
+        'description'
     ];
 
     protected $hidden = [
