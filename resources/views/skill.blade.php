@@ -1,6 +1,6 @@
 <h1>Create Announcement</h1>
 
-<form method="POST" action="customAnnouncement">
+<form method="POST" action="custom-skill">
     @csrf
 
     <label for="skill_name">Skill name:</label><br>
