@@ -10,11 +10,15 @@ class ResumeSkill extends Model
     use HasFactory;
 
     protected $fillable = [
+        'resume_id',
+        'skill_id'
     ];
 
     protected $hidden = [
     ];
 
     protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 }

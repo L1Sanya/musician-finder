@@ -1,3 +1,5 @@
+@extends('nav')
+@section('content')
 <h1>Create Announcement</h1>
 
 <form method="POST" action="customAnnouncement">
@@ -10,13 +12,14 @@
     <label for="description">Description:</label><br>
     <textarea id="description" name="description"></textarea><br>
 
-    <h2>Skills:</h2>
-    <ul>
-        @foreach($announcement->skills as $skill)
-            <li>{{ $skill->name }}</li>
+    <label for="skills">Skills:</label>
+    <select name="skills[]" id="skills" multiple>
+        <option>Choose your skill</option>
+        @foreach($skills as $skill)
+            <option value="{{ $skill->id }}">{{ $skill->name }}</option>
         @endforeach
-    </ul>
-    
+    </select>
+
     <label for="location">Location:</label><br>
     <textarea id="location" name="location"></textarea><br>
 
@@ -24,4 +27,5 @@
     <button type="submit">Create</button>
 
 </form>
+@endsection
 

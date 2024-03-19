@@ -10,11 +10,19 @@ class Skill extends Model
     use HasFactory;
 
     protected $fillable = [
+        'name'
     ];
 
     protected $hidden = [
     ];
 
     protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
+
+    public function resumes()
+    {
+        return $this->belongsToMany(Resume::class, 'resume_skills', 'skill_id', 'resume_id');
+    }
 }

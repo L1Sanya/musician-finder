@@ -1,6 +1,10 @@
 <?php
 
+use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\CustomAuthController;
+use App\Http\Controllers\ResumeController;
+use App\Http\Controllers\MainController;
+use App\Http\Controllers\SkillController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,10 +22,25 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('dashboard', [CustomAuthController::class, 'dashboard'])->name('dashboard');
+
 Route::get('login', [CustomAuthController::class, 'index'])->name('login');
 Route::post('custom-login', [CustomAuthController::class, 'customLogin'])->name('login.custom');
 Route::get('register', [CustomAuthController::class, 'registration'])->name('register');
 Route::post('custom-registration', [CustomAuthController::class, 'customRegistration'])->name('register.custom');
 Route::get('signout', [CustomAuthController::class, 'signOut'])->name('signout');
 
-Route::get('main', [CustomAuthController::class, 'main'])->name('main');
+Route::get('main', [MainController::class, 'main'])->name('main');
+
+Route::get('place-announcement', [AnnouncementController::class, 'placeAnnouncementForm'])->name('place.announcement');
+Route::post('customAnnouncement', [AnnouncementController::class, 'customAnnouncement'])->name('customAnnouncement');
+
+Route::get('skill', [SkillController::class, 'skill'])->name('skill');
+Route::post('custom-skill', [SkillController::class, 'create'])->name('skill');
+
+Route::get('view-announcements', [AnnouncementController::class, 'viewAnnouncements'])->name('announcements.view');
+
+Route::get('resume', [ResumeController::class, 'index'])->name('resume');
+Route::post('custom-resume', [ResumeController::class, 'customResume'])->name('resume.custom');
+
+Route::get('my-resume', [ResumeController::class, 'showResume'])->name('resume.show');
+
