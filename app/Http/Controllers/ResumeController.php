@@ -23,18 +23,26 @@ class ResumeController extends Controller
     public function customResume(Request $request)
     {
         if (Auth::check()) {
+            $user_id = auth()->id();
+            $resume = Resume::where('user_id', $user_id)->first();
+
+            if ($resume) {
+                $resume->skills()->detach();
+                $resume->delete();
+            }
+
             $resume = new Resume();
+            $resume->user_id = $user_id;
             $resume->experience = $request->input('experience');
             $resume->info = $request->input('info');
-            $resume->user_id = auth()->id();
             $resume->save();
 
             $resume->skills()->attach($request->input('skills'));
 
-            return redirect("/main")->withSuccess('You have created the post');
+            return redirect("/main")->with('You have created the post');
 
         } else
-            return redirect("/login")->withSuccess('please login');
+            return redirect("/login")->with('please login');
     }
 
     public function showResume()
@@ -44,10 +52,29 @@ class ResumeController extends Controller
             if ($resume) {
                 return view('resume', compact('resume'));
             } else {
-                return redirect()->back()->withError("Resume not found.");
+                return redirect("resume")->withErrors("Resume not found.");
             }
         } else {
-            return redirect('/login')->withError("Please login.");
+            return redirect('/login')->withErrors("Please login.");
+        }
+    }
+
+    public function deleteResume()
+    {
+        if (Auth::check()) {
+            $user_id = auth()->id();
+            $resume = Resume::where('user_id', $user_id)->first();
+            if ($resume) {
+                $resume->skills()->detach();
+
+                $resume->delete();
+
+                return redirect("/main")->with('You have deleted the resume');
+            } else {
+                return redirect()->back()->withErrors("Resume not found.");
+            }
+        } else {
+            return redirect('/login')->withErrors("Please login.");
         }
     }
 }

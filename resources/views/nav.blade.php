@@ -17,8 +17,13 @@
                 <li><a href="resume"><p>Custom resume</p></a></li>
             </ul>
             <ul class="right">
-                <li><a href="{{ route('login') }}"><p>Log in</p></a></li>
-                <li class="action-item"><a href="register"><p>Sign up</p></a></li>
+                @auth
+                    <li><a href="{{ route('signout') }}"><p>Logout</p></a></li>
+                    <li><a href="{{ route('resume.show') }}"><p>My resume</p></a></li>
+                @else
+                    <li><a href="{{ route('login') }}"><p>Log in</p></a></li>
+                    <li class="action-item"><a href="register"><p>Sign up</p></a></li>
+                @endauth
             </ul>
         </div>
     </nav>
@@ -219,7 +224,7 @@
 </style>
 
 <footer>
-    <p><a href="#"> L1Sanya's </a></p>
+    <p><a href="https://vk.com/l1sanya"> L1Sanya's project </a></p>
 </footer>
 <!-- jQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>

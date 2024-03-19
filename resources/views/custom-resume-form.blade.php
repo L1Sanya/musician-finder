@@ -26,7 +26,7 @@
             <div class="card shadow border-0">
                 <div class="card-body" >
 
-                    <h1 class="text-center"><i class="fa fa-briefcase icon1" aria-hidden="true" ></i>    Candidate Resume</h1>
+                    <h1 class="text-center"><i class="fa fa-briefcase icon1" aria-hidden="true" ></i> Custom Resume</h1>
                     <hr class="style13">
                     <form action="custom-resume" method="post" enctype="multipart/form-data">
 
@@ -84,8 +84,6 @@
 
                         <div class="wrapper">
                             <button type="submit" class="btn btn-success"> <i class="fa fa-check icon2" aria-hidden="true"></i></i> Submit</button>
-                            <button type="submit" class="btn btn-danger" style="width: 110px;"> <i class="fa fa-id-badge" aria-hidden="true" ></i> Edit </button>
-
                         </div>
 
                     </form>
@@ -162,13 +160,13 @@
     }
 </style>
 
-<script>
-    $(document).ready(function(){
+{{--<script>--}}
+{{--    $(document).ready(function(){--}}
 
-        /*! Fades in page on load */
-        $('body').css('display', 'none');
-        $('body').fadeIn(4000);
+{{--        /*! Fades in page on load */--}}
+{{--        $('body').css('display', 'none');--}}
+{{--        $('body').fadeIn(4000);--}}
 
-    });
-</script>
+{{--    });--}}
+{{--</script>--}}
 @endsection

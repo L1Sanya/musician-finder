@@ -43,4 +43,5 @@ Route::get('resume', [ResumeController::class, 'index'])->name('resume');
 Route::post('custom-resume', [ResumeController::class, 'customResume'])->name('resume.custom');
 
 Route::get('my-resume', [ResumeController::class, 'showResume'])->name('resume.show');
+Route::delete('resume', [ResumeController::class,'deleteResume'])->name('resume.delete');
 
