@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Message;
+use App\Models\Response;
 use App\Models\Skill;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Announcement;
 use Illuminate\Support\Facades\Auth;
@@ -39,6 +42,37 @@ class AnnouncementController extends Controller
         $announcements = Announcement::all();
         return view('view-announcements', compact('announcements'));
     }
+
+    public function showAnnouncement(Announcement $announcement)
+    {
+        return view('show-announcement', compact('announcement'));
+    }
+
+    public function reply(Request $request, Announcement $announcement)
+    {
+        $messages = Message::all();
+        if (Auth::check()) {
+            $user = auth()->user();
+
+            $response = new Response();
+            $response->announcement_id = $announcement->id;
+            $response->resume_id = $user->resume->id;
+            $response->save();
+
+            $messageContent = $request->input('message_content');
+
+            $messageFromSender = new Message();
+            $messageFromSender->sender_id = $user->id;
+            $messageFromSender->receiver_id = $announcement->creator_id;
+            $messageFromSender->response_id = $response->id;
+            $messageFromSender->content = $messageContent;
+            $messageFromSender->save();
+
+            return view('dialogs',compact('messages'));
+        }
+        return redirect('main');
+    }
+
 
 
 }

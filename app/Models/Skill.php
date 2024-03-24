@@ -23,6 +23,11 @@ class Skill extends Model
 
     public function resumes()
     {
-        return $this->belongsToMany(Resume::class, 'resume_skills', 'skill_id', 'resume_id');
+        return $this->belongsToMany(Resume::class, 'resume_skills');
+    }
+
+    public function announcements()
+    {
+        return $this->belongsToMany(Announcement::class, 'announcement_skill');
     }
 }

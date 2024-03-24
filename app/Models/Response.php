@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-class Replies extends Model
+class Response extends Model
 {
     use HasFactory, Notifiable;
 
@@ -23,4 +23,13 @@ class Replies extends Model
         'updated_at' => 'datetime',
     ];
 
+    public function announcement()
+    {
+        return $this->belongsTo(Announcement::class);
+    }
+
+    public function resume()
+    {
+        return $this->belongsTo(Resume::class);
+    }
 }

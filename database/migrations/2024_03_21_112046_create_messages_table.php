@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('sender_id')->constrained('users');
             $table->foreignId('receiver_id')->constrained('users');
-            $table->foreignId('reply_id')->constrained('replies');
+            $table->foreignId('response_id')->constrained('responses');
             $table->text('content');
             $table->timestamps();
         });

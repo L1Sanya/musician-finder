@@ -25,8 +25,23 @@ class Announcement extends Model
         'updated_at' => 'datetime',
     ];
 
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'creator_id');
+    }
+
     public function skills()
     {
-        return $this->belongsToMany(Skill::class);
+        return $this->belongsToMany(Skill::class, 'announcement_skill');
+    }
+
+    public function responses()
+    {
+        return $this->hasMany(Response::class);
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
     }
 }

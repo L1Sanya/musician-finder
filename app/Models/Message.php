@@ -10,6 +10,10 @@ class Message extends Model
     use HasFactory;
 
     protected $fillable = [
+        'receiver_id',
+        'sender_id',
+        'response_id',
+        'content'
     ];
 
     protected $hidden = [
@@ -19,4 +23,20 @@ class Message extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    public function sender()
+    {
+        return $this->belongsTo(User::class, 'sender_id');
+    }
+
+    public function receiver()
+    {
+        return $this->belongsTo(User::class, 'receiver_id');
+    }
+
+    public function response()
+    {
+        return $this->belongsTo(Response::class);
+    }
+
 }

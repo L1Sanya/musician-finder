@@ -25,9 +25,19 @@ class Resume extends Model
         'updated_at' => 'datetime',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function skills()
     {
-        return $this->belongsToMany(Skill::class, 'resume_skills', 'resume_id', 'skill_id');
+        return $this->belongsToMany(Skill::class, 'resume_skills');
+    }
+
+    public function responses()
+    {
+        return $this->hasMany(Response::class);
     }
 
 }

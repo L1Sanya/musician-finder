@@ -7,7 +7,9 @@
     <ul>
         @foreach($announcements as $announcement)
             <li>
+                <a href="{{ route('announcements.show', $announcement) }}">
                 <h2>{{ $announcement->title }}</h2>
+                </a>
                 <p>{{ $announcement->description }}</p>
                 <h3>Skills:</h3>
                 <ul>

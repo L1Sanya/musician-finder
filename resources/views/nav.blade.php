@@ -12,14 +12,17 @@
     <nav>
         <div class="content">
             <ul>
+                <li><a href="{{ route('main') }}"><p>Home</p></a></li>
                 <li><a href="place-announcement"><p>Place announcement</p></a></li>
                 <li><a href="view-announcements"><p>Announcements</p></a></li>
                 <li><a href="resume"><p>Custom resume</p></a></li>
+                <li><a href="{{route('responses.check')}}"><p>Check responses</p></a></li>
             </ul>
             <ul class="right">
                 @auth
                     <li><a href="{{ route('signout') }}"><p>Logout</p></a></li>
                     <li><a href="{{ route('resume.show') }}"><p>My resume</p></a></li>
+                    <li><a href="{{ route('dialog.show') }}"><p>Replies</p></a></li>
                 @else
                     <li><a href="{{ route('login') }}"><p>Log in</p></a></li>
                     <li class="action-item"><a href="register"><p>Sign up</p></a></li>
@@ -168,7 +171,7 @@
         line-height: 1.8; }
 
     .content {
-        max-width: 60rem;
+        max-width: 150rem;
         margin: 0 auto;
         width: 100%; }
 

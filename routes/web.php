@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\CustomAuthController;
+use App\Http\Controllers\DialogController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\ResponseController;
 use App\Http\Controllers\ResumeController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\SkillController;
@@ -45,3 +48,12 @@ Route::post('custom-resume', [ResumeController::class, 'customResume'])->name('r
 Route::get('my-resume', [ResumeController::class, 'showResume'])->name('resume.show');
 Route::delete('resume', [ResumeController::class,'deleteResume'])->name('resume.delete');
 
+Route::get('/announcements/{announcement}', [AnnouncementController::class, 'showAnnouncement'])->name('announcements.show');
+
+Route::post('/announcements/{announcement}/reply', [AnnouncementController::class , 'reply'])->name('announcements.reply');
+
+Route::get('dialogs', [MessageController::class, 'show'])->name('dialog.show');
+
+Route::post('messages/send', [MessageController::class, 'send'])->name('messages.send');
+
+Route::get('/responses/{id}', [ResponseController::class, 'check'])->name('responses.check');
