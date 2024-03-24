@@ -4,12 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
-class Dialog extends Model
+class Replies extends Model
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     protected $fillable = [
+        'announcement_id',
+        'resume_id',
     ];
 
     protected $hidden = [
@@ -19,4 +22,5 @@ class Dialog extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
 }
