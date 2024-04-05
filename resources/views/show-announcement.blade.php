@@ -1,3 +1,5 @@
+@extends('main')
+@section('content')
 <h1>{{ $announcement->title }}</h1>
 <p>{{ $announcement->description }}</p>
 <h3>Skills:</h3>
@@ -14,6 +16,7 @@
     <input type="text" name="message_content" placeholder="Type your message">
     <button type="submit" class="btn btn-primary">Откликнуться</button>
 </form>
+@endsection
 
 
 

@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Controllers;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
@@ -11,6 +12,7 @@ class CustomAuthController extends Controller
     {
         return view('auth.login');
     }
+
     public function customLogin(Request $request)
     {
         $request->validate([
@@ -34,9 +36,16 @@ class CustomAuthController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
+            'role' => 'required|in:candidate,employer', // Убедимся, что выбрана допустимая роль
         ]);
+
         $data = $request->all();
-        $check = $this->create($data);
+        $user = $this->create($data);
+
+        // Присваиваем выбранную роль пользователю
+        $role = Role::where('name', $request->role)->first();
+        $user->roles()->attach($role);
+
         return redirect("dashboard")->withSuccess('You have signed-in');
     }
     public function create(array $data)
@@ -44,7 +53,9 @@ class CustomAuthController extends Controller
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password'])
+            'password' => Hash::make($data['password']),
+            'role_id' => $data['role'],
+
         ]);
     }
     public function dashboard()

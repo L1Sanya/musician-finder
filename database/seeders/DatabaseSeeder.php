@@ -5,6 +5,8 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Announcement;
 use App\Models\Resume;
+use App\Models\Role;
+use App\Models\Skill;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -18,10 +20,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $instruments = ['piano', 'guitar', 'violin', 'limba', 'iochin'];
+
+        foreach ($instruments as $instrument) {
+            Skill::create([
+                'name' => $instrument,
+            ]);
+        }
+
         $this->call([
+            Role::create(['name' => 'candidate']),
+            Role::create(['name' => 'employer']),
+            User::factory()->count(10)->create(),
             Announcement::factory()->count(20)->create(),
             Resume::factory()->count(15)->create(),
-            User::factory()->count(10)->create()
         ]);
     }
 }

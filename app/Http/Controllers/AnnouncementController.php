@@ -22,7 +22,6 @@ class AnnouncementController extends Controller
     }
 
 
-
     public function customAnnouncement(Request $request)
     {
         $announcement = new Announcement();
@@ -51,26 +50,39 @@ class AnnouncementController extends Controller
     public function reply(Request $request, Announcement $announcement)
     {
         $messages = Message::all();
+
+        // Проверяем, аутентифицирован ли пользователь
         if (Auth::check()) {
             $user = auth()->user();
 
-            $response = new Response();
-            $response->announcement_id = $announcement->id;
-            $response->resume_id = $user->resume->id;
-            $response->save();
+            // Проверяем, существует ли у пользователя резюме, прежде чем использовать его идентификатор
+            if ($user->resume) {
+                // Создаем новый отклик
+                $response = new Response();
+                $response->announcement_id = $announcement->id;
+                $response->resume_id = $user->resume->id;
+                $response->save();
 
-            $messageContent = $request->input('message_content');
+                // Создаем новое сообщение
+                $messageContent = $request->input('message_content');
+                $messageFromSender = new Message();
+                $messageFromSender->sender_id = $user->getAuthIdentifier();
+                $messageFromSender->receiver_id = $announcement->creator_id;
+                $messageFromSender->response_id = $response->id;
+                $messageFromSender->content = $messageContent;
+                $messageFromSender->save();
 
-            $messageFromSender = new Message();
-            $messageFromSender->sender_id = $user->id;
-            $messageFromSender->receiver_id = $announcement->creator_id;
-            $messageFromSender->response_id = $response->id;
-            $messageFromSender->content = $messageContent;
-            $messageFromSender->save();
-
-            return view('dialogs',compact('messages'));
+                // Возвращаем представление с сообщениями
+                return view('show-responses', compact('messages'));
+            } else {
+                // Если у пользователя нет резюме, можно сделать соответствующее действие
+                // Например, вы можете перенаправить пользователя на страницу создания резюме
+                return redirect()->route('resume.create')->with('error', 'Please create your resume first');
+            }
         }
-        return redirect('main');
+
+        // Если пользователь не аутентифицирован, перенаправляем его на главную страницу
+        return redirect()->route('main')->with('error', 'Please login to reply');
     }
 
 

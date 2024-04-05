@@ -25,11 +25,16 @@ class Response extends Model
 
     public function announcement()
     {
-        return $this->belongsTo(Announcement::class);
+        return $this->belongsTo(Announcement::class); // Отклик относится к одному объявлению
     }
 
     public function resume()
     {
-        return $this->belongsTo(Resume::class);
+        return $this->belongsTo(Resume::class); // Отклик относится к одному резюме
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
     }
 }

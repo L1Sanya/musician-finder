@@ -56,4 +56,9 @@ Route::get('dialogs', [MessageController::class, 'show'])->name('dialog.show');
 
 Route::post('messages/send', [MessageController::class, 'send'])->name('messages.send');
 
-Route::get('/responses/{id}', [ResponseController::class, 'check'])->name('responses.check');
+Route::get('/announcements/{announcement}/responses', [ResponseController::class, 'viewResponses'])->name('announcements.responses');
+
+Route::get('responses', [ResponseController::class, 'index'])->name('index');
+Route::get('/responses/{response}', [ResponseController::class, 'show'])->name('responses.show');
+
+Route::post('/responses/reject', [ResponseController::class, 'reject'])->name('responses.reject');

@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Announcement;
+use App\Models\Role;
+use App\Models\Skill;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -12,34 +15,32 @@ use App\Models\User;
  */
 class UserFactory extends Factory
 {
-    /**
-     * The current password being used by the factory.
-     */
+
     protected static ?string $password;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition(): array
+    protected $model = User::class;
+
+    public function definition()
     {
+        $roles = ['candidate', 'employer'];
+        $randomRole = $this->faker->randomElement($roles);
+
         return [
             'name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
-            //'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            //'remember_token' => Str::random(10),
+            'password' => Hash::make('password'),
+            'role_id' => Role::where('name', $randomRole)->first()->id,
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
-    public function unverified(): static
+    public function configure()
     {
-        return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
-        ]);
+        return $this->afterCreating(function (User $user) {
+            // Присваиваем случайную роль к созданному пользователю
+            $role = Role::inRandomOrder()->first();
+            $user->update(['role_id' => $role->id]);
+        });
     }
 }

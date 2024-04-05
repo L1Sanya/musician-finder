@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Announcement;
+use App\Models\Role;
+use App\Models\Skill;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -14,10 +17,22 @@ class SkillsFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition(): array
+    protected $model = Skill::class;
+
+    public function definition()
     {
+        static $instruments;
+
+        $instruments = $instruments ?: ['piano', 'guitar', 'violin', 'limba', 'iochin'];
+        $instrument = $this->faker->unique()->randomElement($instruments);
+
+        // Удаление инструмента из массива, чтобы он больше не мог быть выбран
+        $key = array_search($instrument, $instruments);
+        unset($instruments[$key]);
+
         return [
-            'name' => $this->faker->sentence('piano')
+            'name' => $instrument,
         ];
     }
+
 }

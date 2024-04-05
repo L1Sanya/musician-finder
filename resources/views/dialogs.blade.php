@@ -1,18 +1,20 @@
+@extends('nav')
+@section('content')
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dialog</title>
+    <title>Dialogs</title>
 </head>
 <body>
-<h1>Dialog</h1>
+<h1>Dialogs</h1>
 
 <div>
     <!-- Отображение всех сообщений -->
     @foreach($messages as $message)
+        <p>From: {{ $message->sender_id }}, To: {{ $message->receiver_id }}</p>
         <p>{{ $message->content }}</p>
-        <small>From: {{ $message->sender->name }}, To: {{ $message->receiver->name }}</small>
         <hr>
     @endforeach
 </div>
@@ -20,8 +22,12 @@
 <!-- Форма для отправки нового сообщения -->
 <form action="{{ route('messages.send') }}" method="post">
     @csrf
-    <input type="text" name="message_content" placeholder="Type your message">
+    <!-- Поле для ввода содержания сообщения -->
+    <input type="text" name="content" placeholder="Type your message">
+    <!-- Кнопка "Send" для отправки сообщения -->
     <button type="submit">Send</button>
 </form>
+
 </body>
 </html>
+@endsection

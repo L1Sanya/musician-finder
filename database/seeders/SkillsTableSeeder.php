@@ -14,8 +14,14 @@ class SkillsTableSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run(): void
+    public function run()
     {
-        Skill::factory()->count(2)->create();
+        $instruments = ['piano', 'guitar', 'violin', 'limba', 'iochin'];
+
+        foreach ($instruments as $instrument) {
+            Skill::create([
+                'name' => $instrument,
+            ]);
+        }
     }
 }
