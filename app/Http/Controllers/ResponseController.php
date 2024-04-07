@@ -20,11 +20,34 @@ class ResponseController extends Controller
         }
     }
 
-    public function index()
+    public function showAllResponses(Request $request)
     {
         $messages = Message::all();
         $responses = Response::all();
-        return view('index', compact('responses', 'messages'));
+        return view('responses.showAll', compact('responses', 'messages'));
+    }
+
+
+    public function create(Request $request, Announcement $announcement)
+    {
+        if (Auth::check()) {
+            $user = auth()->user();
+
+            if ($user->isCandidate()) {
+                // Создаем новый отклик
+                $response = new Response();
+                $response->announcement_id = $announcement->id;
+                $response->resume_id = $user->resume->id;
+                $response->save();
+
+                return redirect()->route('responses.show', $response)->with('success', 'Response created successfully');
+            } else {
+                // Если пользователь не кандидат, выводим сообщение об ошибке
+                return redirect()->back()->with('error', 'Only candidates can respond to announcements');
+            }
+        } else {
+            return redirect()->route('login')->with('error', 'Please log in to respond to announcements');
+        }
     }
 
     public function reject(Request $request)
@@ -37,7 +60,6 @@ class ResponseController extends Controller
 
 
             if ($response) {
-                // Отправляем сообщение об отклонении отклика
                 $message = new Message();
                 $message->sender_id = auth()->id();
                 $message->receiver_id = $response->resume->user_id; // Отправляем сообщение автору резюме, на которое откликнулись
@@ -45,17 +67,13 @@ class ResponseController extends Controller
                 $message->content = 'Your application has been rejected.';
                 $message->save();
 
-                // Удаляем отклик из базы данных
                 $response->delete();
 
-                // Возвращаем сообщение об успешном отклонении отклика
                 return redirect()->back()->with('success', 'Response rejected successfully');
             } else {
-                // Если отклик не найден, возвращаем ошибку
                 return redirect()->back()->with('error', 'Response not found');
             }
         } else {
-            // Если пользователь не аутентифицирован, перенаправляем его на страницу входа
             return redirect()->route('login')->with('error', 'Please login to reject responses');
         }
     }

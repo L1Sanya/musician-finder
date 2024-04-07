@@ -16,22 +16,22 @@
         <p>{{ $message->content }}</p>
         <hr>
     </div>
+
+    <!-- Форма отправки сообщения для каждого сообщения -->
+    <form action="{{ route('messages.send') }}" method="POST">
+        @csrf
+        <input type="hidden" name="receiver_id" value="{{ $message->receiver_id }}">
+        <input type="hidden" name="response_id" value="{{ $message->receiver_id }}">
+        <textarea name="content" placeholder="Enter your message"></textarea>
+        <button type="submit">Send Message</button>
+    </form>
+
+    <!-- Форма для отклонения -->
+    <form action="{{ route('responses.reject') }}" method="POST">
+        @csrf
+        <button type="submit">Reject</button>
+    </form>
 @endforeach
-
-<!-- Форма отправки сообщения -->
-<form action="{{ route('messages.send') }}" method="POST">
-    @csrf
-    <input type="hidden" name="receiver_id" value="{{ $message->receiver_id }}">
-    <input type="hidden" name="response_id" value="{{ $message->receiver_id }}">
-    <textarea name="content" placeholder="Enter your message"></textarea>
-    <button type="submit">Send Message</button>
-</form>
-
-<!-- Форма для отклонения -->
-<form action="{{ route('responses.reject') }}" method="POST">
-    @csrf
-    <button type="submit">Reject</button>
-</form>
 
 </body>
 </html>

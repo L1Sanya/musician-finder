@@ -1,108 +1,75 @@
 @extends('nav')
 
 @section('content')
-    <div class="container mt-2">
-        <div class="row">
-            <div class="col"></div>
-            <div class="col-sm-7 col-md-9 col-lg-9">
-                <div class="card shadow border-0">
-                    <div class="card-body">
-                        <h1 class="text-center"><i class="fa fa-briefcase icon1" aria-hidden="true"></i> Candidate Resume</h1>
-                        <hr class="style13">
-                        <div class="resume-info">
-                            <h3>Experience:</h3>
-                            <p>{{ $resume->experience }}</p>
-
-                            <h3>Skills:</h3>
-                            <ul>
-                                @foreach($resume->skills as $skill)
-                                    <li>{{ $skill->name }}</li>
-                                @endforeach
-                            </ul>
-
-                            <h3>Info:</h3>
-                            <p>{{ $resume->info }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col"></div>
-        </div>
-        @if($resume)
-            <form action="{{ route('resume.delete') }}" method="post">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger">Delete Resume</button>
-            </form>
-        @endif
-    </div>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Resume</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
         .container {
-            margin-top: 20px;
-        }
-
-        .card {
-            margin-bottom: 20px;
-            background-color: #f8f9fa; /* Светлый серый цвет */
-        }
-
-        .card-body {
+            max-width: 800px;
+            margin: 20px auto;
             padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-
-        .resume-info {
-            margin-bottom: 20px;
-        }
-
-        /* Заголовки */
         h1 {
-            font-size: 36px;
             text-align: center;
+            color: #333;
+        }
+        .resume {
             margin-bottom: 20px;
-            color: #007bff; /* Синий цвет */
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
         }
-
-        h3 {
-            font-size: 28px;
-            margin-bottom: 10px;
-            color: #28a745; /* Зелёный цвет */
+        .resume h2 {
+            color: #555;
         }
-
-        /* Список навыков */
-        .resume-info ul {
-            list-style-type: none;
-            padding-left: 0;
+        .resume p {
+            color: #777;
         }
-
-        .resume-info li {
-            display: inline; /* Отображать элементы в одну строку */
-            margin-right: 10px; /* Добавить небольшое расстояние между навыками */
-            color: #6c757d; /* Серый цвет */
+        .resume ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
         }
-
-        .resume-info li:not(:last-child) {
-            border-right: 1px solid #6c757d; /* Добавляем разделитель между навыками */
-            padding-right: 5px; /* Небольшое расстояние между навыками и разделителем */
-        }
-
-        /* Задаем цвет и стиль разделителя для последнего элемента */
-        .resume-info li:last-child {
-            border-right: none; /* Убираем разделитель у последнего навыка */
-        }
-
-        /* Кнопка удаления резюме */
-        .btn-danger {
-            margin-top: 20px;
-            background-color: #dc3545; /* Красный цвет */
-            border-color: #dc3545; /* Красный цвет */
-            color: #fff; /* Белый цвет */
-        }
-
-        /* Линия-разделитель */
-        hr.style13 {
-            height: 10px;
-            border: 0;
-            background-color: #ffc107; /* Жёлтый цвет */
+        .resume ul li {
+            margin-bottom: 5px;
         }
     </style>
+</head>
+<body>
+<div class="container">
+    <h1>My Resume</h1>
+    <div class="resume">
+        <h2>John Doe</h2>
+        <p>Email: john@example.com</p>
+        <p>Phone: 123-456-7890</p>
+        <h3>Skills:</h3>
+        <ul>
+            <li>HTML</li>
+            <li>CSS</li>
+            <li>JavaScript</li>
+            <li>PHP</li>
+        </ul>
+        <h3>Experience:</h3>
+        <p>Frontend Developer at XYZ Company (2018 - Present)</p>
+        <p>Backend Developer at ABC Inc. (2015 - 2018)</p>
+        <h3>Education:</h3>
+        <p>Bachelor's Degree in Computer Science, University of Example (2011 - 2015)</p>
+    </div>
+</div>
+</body>
+</html>
 @endsection

@@ -3,39 +3,39 @@
         <a href="{{ route('main') }}">Home</a>
     </div>
     <nav>
-        <form class="search" action="">
+        <form class="search" action="search.php">
             <input name="q" placeholder="Search..." type="search">
         </form>
         <ul>
             <li><a href="{{ route('announcements.view') }}"><p>Announcements</p></a></li>
             <li><a href="{{ route('responses.index') }}"><p>Responses</p></a></li>
             <li class="dropdown">
-                <a href="{{ route('contacts.view') }}">Contact</a>
+                <a href="">Contact</a>
                 <ul>
                     <li><a href="#">About Version</a></li>
+                    <li><a href="#">About Version</a></li>
+                    <li><a href="#">Contact Us</a></li>
                     <li><a href="#">Contact Us</a></li>
                 </ul>
             </li>
             @auth
                 @if(auth()->user()->role->name == 'employer')
-                    <li><a href="/place-announcement"><p>Place announcement</p></a></li>
+                    <li><a href="place-announcement"><p>Place announcement</p></a></li>
                 @elseif(auth()->user()->role->name == 'candidate')
-                    <li><a href="/resume"><p>Custom resume</p></a></li>
+                    <li><a href="resume"><p>Custom resume</p></a></li>
                     <li><a href="{{ route('resume.show') }}"><p>My resume</p></a></li>
                 @endif
                 <li><a href="{{ route('signout') }}"><p>Logout</p></a></li>
             @else
                 <li><a href="{{ route('login') }}"><p>Log in</p></a></li>
-                <li class="action-item"><a href="/register"><p>Sign up</p></a></li>
+                <li class="action-item"><a href="register"><p>Sign up</p></a></li>
             @endauth
         </ul>
     </nav>
 </div>
-
 <style>
     *, *:before, *:after {-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;margin:0;padding:0}
-    body{background:#bdc3c7;line-height:1.5;
-        font-family:Helvetica, sans-serif;text-transform:uppercase;font-size:16px;color:#fff}
+    body{background:#bdc3c7;line-height:1.5;font-family:sans-serif;text-transform:uppercase;font-size:16px;color:#fff}
     a{text-decoration:none;color:#fff}
     #header{background:#1E262D;width:100%;position:relative}
     #header:after{content:"";clear:both;display:block}
@@ -57,8 +57,7 @@
     nav .dropdown li a{padding:10px 35px;font-size:13px;min-width:200px}
     nav .mega-dropdown{width:100%;position:absolute;top:100%;left:0;background:#fff;overflow:hidden;padding:20px 35px;border-bottom:3px solid #34495e}
     nav li li a{float:none;color:#333;display:block;padding:8px 10px;border-radius:3px;font-size:13px}
-    nav li li a:hover{
-        background:#FAFBFB}
+    nav li li a:hover{background:#bdc3c7;background:#FAFBFB}
     .mega-col{width:25%;float:left}
     #menu-icon{position:absolute;right:0;top:50%;margin-top:-12px;margin-right:30px;display:none}
     #menu-icon span{border:2px solid #fff;width:30px;margin-bottom:5px;display:block;-webkit-transition:all .2s;transition:all .1s}
@@ -89,6 +88,10 @@
 
 </style>
 
+<body>
+@yield ('content')
+</body>
+
 <script>
     $('#header').prepend('<div id="menu-icon"><span class="first"></span><span class="second"></span><span class="third"></span></div>');
 
@@ -97,6 +100,3 @@
         $(this).toggleClass("active");
     });
 </script>
-
-
-@yield ('content')
