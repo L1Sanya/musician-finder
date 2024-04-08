@@ -12,9 +12,19 @@ class ResponseController extends Controller
 {
     public function show(Response $response)
     {
-        if (Auth::check() && (Auth::user()->id == $response->announcement->creator_id || Auth::user()->id == $response->resume->user_id)) {
-            $messages = $response->messages()->get();
-            return view('show-responses', compact('response', 'messages'));
+        if (Auth::check()) {
+            $user = Auth::user();
+            if ($user->role->name == 'employer') {
+                $receiver_id = $response->announcement->responses->first()->resume->user_id;
+            } elseif ($user->role->name == 'candidate') {
+                $receiver_id = $response->announcement->creator_id;
+            }
+
+            $sender_id = $user->id;
+            $messages = $response->messages;
+            $response_id = $response->id; // Добавляем получение $response_id
+
+            return view('show-responses', compact('response', 'messages', 'sender_id', 'receiver_id', 'response_id')); // Включаем $response_id в компакт
         } else {
             return redirect()->back()->with('error', 'You are not authorized to view this conversation');
         }

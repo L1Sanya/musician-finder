@@ -100,7 +100,7 @@
         <h3 class="location-heading">Location:</h3>
         <p class="location-item">{{ $announcement->location }}</p>
     </div>
-
+    @if (auth()->user()->role->name == 'candidate')
     <!-- Форма для отправки отклика -->
     <div class="reply-form">
         <form action="{{ route('announcements.reply', $announcement) }}" method="post">
@@ -109,6 +109,7 @@
             <button type="submit">Reply</button>
         </form>
     </div>
+    @endif
 </div>
 </body>
 </html>

@@ -69,7 +69,7 @@ class AnnouncementController extends Controller
                 $messageFromSender->content = $messageContent;
                 $messageFromSender->save();
 
-                return view('show-responses', compact('messages'));
+                return view('main');
             } else {
 
                 return redirect()->route('resume.create')->with('error', 'Please create your resume first');
