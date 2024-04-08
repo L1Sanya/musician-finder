@@ -31,4 +31,23 @@ class UserFactory extends Factory
             'updated_at' => now(),
         ];
     }
+
+    public function candidate()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'role_id' => Role::where('name', 'candidate')->first()->id,
+            ];
+        });
+    }
+
+    // Определяем пользовательский метод для создания пользователя с ролью "employer"
+    public function employer()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'role_id' => Role::where('name', 'employer')->first()->id,
+            ];
+        });
+    }
 }

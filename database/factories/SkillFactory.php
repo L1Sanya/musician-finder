@@ -15,7 +15,7 @@ class SkillFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->word,
+            'name' => $this->faker->unique()->randomElement(['Piano', 'Guitar', 'Violin', 'Ukulele', 'Cello', 'Flute', 'Drums']),
             'created_at' => now(),
             'updated_at' => now(),
         ];

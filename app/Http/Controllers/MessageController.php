@@ -31,21 +31,4 @@ class MessageController extends Controller
         return redirect()->back()->with('success', 'Message sent successfully');
     }
 
-
-    public function showMessage(Response $response)
-    {
-        $messages = Message::where('response_id', $response->id)->get();
-
-        return view('messages.show', compact('messages'));
-    }
-
-    public function getByResponseId(Request $request)
-    {
-        $responseId = $request->input('response_id');
-
-        $messages = Message::where('response_id', $responseId)->get();
-
-        return response()->json($messages);
-    }
-
 }

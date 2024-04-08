@@ -103,20 +103,16 @@
 
 <div class="container">
     <br>
-    @if($messages->isNotEmpty())
+
         <h2>
-            @if(Auth::id() == $messages[0]->sender_id)
-                You
-            @else
-                {{ $messages[0]->receiver->name }}
-            @endif
+            Dialog
         </h2>
-    @endif
+
     <br> <br>
     <div class="message-container" id="message-container">
         @foreach($messages->reverse() as $message)
             <div class="message {{ Auth::id() == $message->sender_id ? 'sent' : 'received' }}">
-                <p><span class="username">{{ Auth::id() == $message->sender_id ? 'You' : $message->receiver->name }}</span></p>
+                <p><span class="username">{{ Auth::id() == $message->sender_id ? 'You' : $message->sender->name }}</span></p>
                 <hr>
                 <p>{{ $message->content }}</p>
                 <br>
