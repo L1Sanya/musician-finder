@@ -8,11 +8,8 @@ use Illuminate\Database\Seeder;
 
 class AnnouncementsTableSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run()
     {
-        Announcement::factory()->count(20)->create();
+        Announcement::factory()->count(5)->create();
     }
 }

@@ -8,7 +8,6 @@
         </form>
         <ul>
             <li><a href="{{ route('announcements.view') }}"><p>Announcements</p></a></li>
-            <li><a href="{{ route('responses.index') }}"><p>Responses</p></a></li>
             <li class="dropdown">
                 <a href="{{ route('contacts.view') }}">Contact</a>
                 <ul>
@@ -19,9 +18,11 @@
             @auth
                 @if(auth()->user()->role->name == 'employer')
                     <li><a href="/place-announcement"><p>Place announcement</p></a></li>
+                    <li><a href="{{ route('responses.index') }}"><p>Responses</p></a></li>
                 @elseif(auth()->user()->role->name == 'candidate')
                     <li><a href="/resume"><p>Custom resume</p></a></li>
                     <li><a href="{{ route('resume.show') }}"><p>My resume</p></a></li>
+                    <li><a href="{{ route('responses.index') }}"><p>Responses</p></a></li>
                 @endif
                 <li><a href="{{ route('signout') }}"><p>Logout</p></a></li>
             @else

@@ -43,10 +43,10 @@ Route::post('custom-skill', [SkillController::class, 'create'])->name('skill');
 Route::get('view-announcements', [AnnouncementController::class, 'viewAnnouncements'])->name('announcements.view');
 
 Route::get('resume', [ResumeController::class, 'index'])->name('resume');
-Route::post('custom-resume', [ResumeController::class, 'customResume'])->name('resume.custom');
+Route::post('custom-resume', [ResumeController::class, 'customResume'])->name('custom.resume');
 
 Route::get('my-resume', [ResumeController::class, 'showResume'])->name('resume.show');
-Route::delete('resume', [ResumeController::class,'deleteResume'])->name('resume.delete');
+Route::delete('delete-resume', [ResumeController::class,'deleteResume'])->name('delete.resume');
 
 Route::get('/announcements/{announcement}', [AnnouncementController::class, 'showAnnouncement'])->name('announcements.show');
 

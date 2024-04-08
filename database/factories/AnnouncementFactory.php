@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Announcement;
+use App\Models\Role;
 use App\Models\Skill;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -12,11 +13,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class AnnouncementFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     protected $model = Announcement::class;
 
     public function definition()
@@ -24,19 +20,10 @@ class AnnouncementFactory extends Factory
         return [
             'title' => $this->faker->sentence,
             'description' => $this->faker->paragraph,
-            'creator_id' => function () {
-                return User::factory()->create()->id;
-            },
+            'creator_id' => User::factory(),
             'location' => $this->faker->city,
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
-    }
-
-    public function configure()
-    {
-        return $this->afterCreating(function (Announcement $announcement) {
-            // Добавляем случайные навыки к созданному объявлению
-            $skills = Skill::inRandomOrder()->limit(rand(1, 3))->get();
-            $announcement->skills()->attach($skills);
-        });
     }
 }

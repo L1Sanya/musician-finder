@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Message extends Model
 {
@@ -29,14 +30,19 @@ class Message extends Model
         return $this->belongsTo(User::class, 'sender_id');
     }
 
-    public function receiver()
+    public function receiver(): BelongsTo
     {
         return $this->belongsTo(User::class, 'receiver_id');
     }
 
     public function response()
     {
-        return $this->belongsTo(Response::class); // Сообщение относится к одному отклику
+        return $this->belongsTo(Response::class);
+    }
+
+    public function getByResponseId($responseId)
+    {
+        return $this->where('response_id', $responseId)->get();
     }
 
 }

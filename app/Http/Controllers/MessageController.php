@@ -22,4 +22,14 @@ class MessageController extends Controller
 
         return view('messages.show', compact('messages'));
     }
+
+    public function getByResponseId(Request $request)
+    {
+        $responseId = $request->input('response_id');
+
+        $messages = Message::where('response_id', $responseId)->get();
+
+        return response()->json($messages);
+    }
+
 }

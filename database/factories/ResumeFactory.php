@@ -12,19 +12,16 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ResumeFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     protected $model = Resume::class;
 
     public function definition()
     {
         return [
-            'user_id' => User::factory()->create()->id,
+            'user_id' => User::factory(),
             'experience' => $this->faker->sentence(),
             'info' => $this->faker->paragraphs(3, true),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

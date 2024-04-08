@@ -15,25 +15,14 @@ use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
-    public function run(): void
+    public function run()
     {
-        $instruments = ['piano', 'guitar', 'violin', 'limba', 'iochin'];
-
-        foreach ($instruments as $instrument) {
-            Skill::create([
-                'name' => $instrument,
-            ]);
-        }
-
         $this->call([
-            Role::create(['name' => 'candidate']),
-            Role::create(['name' => 'employer']),
-            User::factory()->count(10)->create(),
-            Announcement::factory()->count(20)->create(),
-            Resume::factory()->count(15)->create(),
+            RolesTableSeeder::class,
+            UsersTableSeeder::class,
+            SkillsTableSeeder::class,
+            ResumesTableSeeder::class,
+            AnnouncementsTableSeeder::class,
         ]);
     }
 }

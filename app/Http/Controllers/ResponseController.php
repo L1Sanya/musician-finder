@@ -22,9 +22,30 @@ class ResponseController extends Controller
 
     public function showAllResponses(Request $request)
     {
-        $messages = Message::all();
-        $responses = Response::all();
-        return view('responses.showAll', compact('responses', 'messages'));
+        $user = Auth::user();
+
+        // Проверяем, что пользователь залогинен
+        if ($user) {
+            // Получаем ответы, связанные с объявлениями пользователя или его резюме
+            $responses = Response::whereHas('announcement', function($query) use ($user) {
+                $query->where('creator_id', $user->id);
+            });
+
+            // Проверяем, существует ли у пользователя резюме
+            if ($user->resume) {
+                // Если резюме существует, добавляем условие для ответов, связанных с резюме пользователя
+                $responses->orWhere('resume_id', $user->resume->id);
+            }
+
+            // Получаем результаты запроса
+            $responses = $responses->get();
+
+            // Передаем ответы в представление для отображения
+            return view('responses.showAll', compact('responses'));
+        } else {
+            // Если пользователь не залогинен, перенаправляем на страницу логина
+            return redirect()->route('login');
+        }
     }
 
 

@@ -79,6 +79,15 @@ class AnnouncementController extends Controller
         return redirect()->route('main')->with('error', 'Please login to reply');
     }
 
+    public function getMessagesByAnnouncementId(Request $request)
+    {
+        $announcementId = $request->input('announcement_id');
 
+        $messages = Message::whereHas('response', function ($query) use ($announcementId) {
+            $query->where('announcement_id', $announcementId);
+        })->get();
+
+        return response()->json($messages);
+    }
 
 }

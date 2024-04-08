@@ -43,9 +43,17 @@
             list-style: none;
             padding: 0;
             margin: 10px 0;
+            color: #333; /* Цвет текста списка навыков */
         }
         .announcement ul li {
             margin-bottom: 5px;
+        }
+        .announcement h3 {
+            color: #333;
+            margin-top: 10px;
+        }
+        .announcement p.location {
+            color: #555; /* Темный цвет текста для Location */
         }
         .announcement a {
             color: #007bff;
@@ -59,31 +67,21 @@
 <body>
 <div class="container">
     <h1>Latest Announcements</h1>
-    <div class="announcement">
-        <h2>Title of Announcement 1</h2>
-        <p>Description of Announcement 1. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-        <h3>Skills:</h3>
-        <ul>
-            <li>Skill 1</li>
-            <li>Skill 2</li>
-            <li>Skill 3</li>
-        </ul>
-        <p>Location: City, Country</p>
-        <a href="#">Read More</a>
-    </div>
-    <div class="announcement">
-        <h2>Title of Announcement 2</h2>
-        <p>Description of Announcement 2. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-        <h3>Skills:</h3>
-        <ul>
-            <li>Skill A</li>
-            <li>Skill B</li>
-            <li>Skill C</li>
-        </ul>
-        <p>Location: City, Country</p>
-        <a href="#">Read More</a>
-    </div>
-    <!-- Add more announcements as needed -->
+    @foreach($announcements as $announcement)
+        <div class="announcement">
+            <h2>{{ $announcement->title }}</h2>
+            <p>{{ $announcement->description }}</p>
+            <h3>Skills:</h3>
+            <ul>
+                @foreach($announcement->skills as $skill)
+                    <li>{{ $skill->name }}</li>
+                @endforeach
+            </ul>
+            <h3>Location:</h3>
+            <p class="location">{{ $announcement->location }}</p>
+            <a href="{{ route('announcements.show', $announcement) }}">Read More</a>
+        </div>
+    @endforeach
 </div>
 </body>
 </html>
