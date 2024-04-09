@@ -62,11 +62,62 @@
         .announcement a:hover {
             text-decoration: underline;
         }
+        .filter-form {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .filter-form label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        .filter-form select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        .filter-form button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .filter-form button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>Latest Announcements</h1>
+    <h1>Announcements</h1>
+
+    <div class="filter-form">
+        <form action="{{ route('announcements.filter') }}" method="GET">
+            <label for="skill">Filter by Skill:</label>
+            <select name="skill" id="skill">
+                <option value="">Select Skill</option>
+                @foreach($skills as $skill)
+                    <option value="{{ $skill->id }}">{{ $skill->name }}</option>
+                @endforeach
+            </select>
+
+            <label for="location">Filter by Location:</label>
+            <select name="location" id="location">
+                <option value="">Select Location</option>
+                @foreach($locations as $location)
+                    <option value="{{ $location }}">{{ $location }}</option>
+                @endforeach
+            </select>
+            <br>
+            <br>
+            <button type="submit">Apply Filters</button>
+        </form>
+    </div>
+
     @foreach($announcements as $announcement)
         <div class="announcement">
             <h2>{{ $announcement->title }}</h2>

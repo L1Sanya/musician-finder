@@ -103,10 +103,9 @@
 
 <div class="container">
     <br>
-
-        <h2>
-            Dialog
-        </h2>
+    <h2>
+        {{ $interlocutorName }}
+    </h2>
 
     <br> <br>
     <div class="message-container" id="message-container">

@@ -59,6 +59,20 @@ class ResumeController extends Controller
         }
     }
 
+    public function showResumeForEmployer($resumeId)
+    {
+        if (Auth::check()) {
+            $resume = Resume::findOrFail($resumeId);
+            if ($resume) {
+                return view('ShowResumeForEmployer', compact('resume'));
+            } else {
+                return redirect()->route('resume.index')->withErrors("Resume not found.");
+            }
+        } else {
+            return redirect('/login')->withErrors("Please login.");
+        }
+    }
+
     public function deleteResume()
     {
         if (Auth::check()) {

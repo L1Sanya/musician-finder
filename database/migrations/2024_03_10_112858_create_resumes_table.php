@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->string('experience');
             $table->text('info');
+            $table->string('location')->nullable();
             $table->timestamps();
         });
     }

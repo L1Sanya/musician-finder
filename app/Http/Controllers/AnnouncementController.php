@@ -40,9 +40,23 @@ class AnnouncementController extends Controller
     {
 
         $skills = Skill::all();
-        $announcements = Announcement::all();
+        $announcements = Announcement::query();
+        $locations = Announcement::distinct()->pluck('location');
 
-        return view('view-announcements', compact('announcements', 'skills'));
+        if (Auth::check() && Auth::user()->role->name == 'candidate' && Auth::user()->resume) {
+            $resumeSkills = Auth::user()->resume->skills->pluck('id')->toArray();
+            $resumeLocation = Auth::user()->resume->location;
+
+            $announcements->where(function ($query) use ($resumeSkills, $resumeLocation) {
+                $query->whereHas('skills', function ($query) use ($resumeSkills) {
+                    $query->whereIn('skills.id', $resumeSkills);
+                })->orWhere('location', $resumeLocation);
+            });
+        }
+
+        $announcements = $announcements->get();
+
+        return view('view-announcements', compact('announcements', 'skills', 'locations'));
     }
 
     public function showAnnouncement(Announcement $announcement)
@@ -75,11 +89,36 @@ class AnnouncementController extends Controller
                 return view('main');
             } else {
 
-                return redirect()->route('resume.create')->with('error', 'Please create your resume first');
+                return redirect()->route('resume')->with('error', 'Please create your resume first');
             }
         }
 
         return redirect()->route('main')->with('error', 'Please login to reply');
+    }
+
+    public function filter(Request $request)
+    {
+        $skills = Skill::all();
+        $locations = Announcement::distinct()->pluck('location')->toArray();
+
+        $selectedSkill = $request->input('skill');
+        $selectedLocation = $request->input('location');
+
+        $query = Announcement::query();
+
+        if ($selectedSkill) {
+            $query->whereHas('skills', function ($q) use ($selectedSkill) {
+                $q->where('skills.id', $selectedSkill);
+            });
+        }
+
+        if ($selectedLocation) {
+            $query->where('location', $selectedLocation);
+        }
+
+        $announcements = $query->get();
+
+        return view('view-announcements', compact('announcements', 'skills', 'locations'));
     }
 
 }

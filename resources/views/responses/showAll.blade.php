@@ -21,6 +21,9 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+        .container h3 {
+            color: #333;
+        }
         h1 {
             text-align: center;
             color: #333;
@@ -53,6 +56,18 @@
         .response a:hover {
             text-decoration: underline;
         }
+        .response h2 a{
+            color: black;
+        }
+        .response a.blackname {
+            color: black; /* Пример стиля для текста */
+            font-weight: bold; /* Пример стиля для жирного шрифта */
+            /* Другие свойства стилей */
+        }
+        .response a.dialog {
+            font-weight: bold;
+            text-align: right;
+        }
     </style>
 </head>
 <body>
@@ -60,8 +75,9 @@
     <h1>Responses to Announcements</h1>
     @foreach($responses as $response)
         <div class="response">
-            <h2>Response {{ $response->id }}</h2>
-            <p>Description of Response {{ $response->id }}. {{ $response->description }}</p>
+            <h2><a href="{{ route('announcements.show', ['announcement' => $response->announcement->id]) }}">{{$response->announcement->title}}</a></h2>
+            <h3>Description:</h3>
+            <p>{{ $response->announcement->description }}</p>
             @if($response->skills)
                 <h3>Skills:</h3>
                 <ul>
@@ -70,7 +86,17 @@
                     @endforeach
                 </ul>
             @endif
-            <a href="{{ route('responses.show', ['response' => $response->id]) }}">Read More</a>
+            @if(Auth::user()->role->name == 'candidate')
+                <h3>Published By:</h3>
+                <p>{{ $response->announcement->creator->name }}</p>
+            @elseif(Auth::user()->role->name == 'employer')
+                <h3>Resume of Candidate:</h3>
+                <a class='dialog' href="{{ route('resume.showResumeToEmployer', ['resumeId' => $response->resume->id]) }}">{{ $response->resume->user->name }}</a>
+
+                <br>
+            @endif
+            <br>
+            <a class='dialog' href="{{ route('responses.show', ['response' => $response->id]) }}">Go to dialog</a>
         </div>
     @endforeach
     <!-- Add more responses as needed -->

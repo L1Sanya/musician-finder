@@ -24,6 +24,7 @@ class ResumeFactory extends Factory
             'user_id' => $user->id,
             'experience' => $this->faker->sentence(),
             'info' => $this->faker->paragraphs(3, true),
+            'location' => $this->faker->city(),
             'created_at' => now(),
             'updated_at' => now(),
         ];

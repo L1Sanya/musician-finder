@@ -10,6 +10,6 @@ class ResumesTableSeeder extends Seeder
 {
     public function run()
     {
-        Resume::factory()->count(5)->create();
+        Resume::factory()->count(10)->create();
     }
 }
