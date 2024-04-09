@@ -121,4 +121,21 @@ class AnnouncementController extends Controller
         return view('view-announcements', compact('announcements', 'skills', 'locations'));
     }
 
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+
+        $announcementsByTitle = Announcement::where('title', 'like', '%' . $query . '%')->get();
+
+        $skills = Skill::where('name', 'like', '%' . $query . '%')->pluck('id');
+        $announcementsBySkills = Announcement::whereHas('skills', function ($query) use ($skills) {
+            $query->whereIn('skills.id', $skills);
+        })->get();
+
+        $announcementsByLocation = Announcement::where('location', 'like', '%' . $query . '%')->get();
+
+        $announcements = $announcementsByTitle->merge($announcementsBySkills)->merge($announcementsByLocation);
+
+        return view('search-results', compact('announcements'));
+    }
 }

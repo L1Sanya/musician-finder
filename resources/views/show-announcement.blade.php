@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Announcement Details</title>
     <style>
-        body {
+        .body {
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
             margin: 0;
@@ -106,7 +106,7 @@
         <form action="{{ route('announcements.reply', $announcement) }}" method="post">
             @csrf
             <input type="text" name="message_content" placeholder="Type your message">
-            <button type="submit">Reply</button>
+            <button type="submit">Respond</button>
         </form>
     </div>
     @endif

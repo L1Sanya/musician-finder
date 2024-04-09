@@ -8,7 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Announcements</title>
     <style>
-        body {
+        /* Ваши стили здесь */
+        .body {
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
             margin: 0;
@@ -32,6 +33,7 @@
             background-color: #f9f9f9;
             border-radius: 8px;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            text-transform: none;
         }
         .announcement h2 {
             color: #555;
@@ -85,15 +87,27 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            margin-top: 10px; /* Добавлено для отступа от предыдущего элемента */
         }
         .filter-form button:hover {
             background-color: #0056b3;
+        }
+        input[type="text"] {
+            width: calc(100% - 100px); /* Ширина поля ввода, учитывая размер кнопки поиска */
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
         }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>Announcements</h1>
+    <br>
+    <form action="{{ route('announcements.search') }}" method="GET" style="display: flex;">
+        <input type="text" name="query" id="search" placeholder="Enter search term" autofocus style="flex: 1; padding: 10px; border-radius: 4px 0 0 4px; border: 1px solid #ccc;">
+        <button type="submit" style="background-color: #007bff; color: #fff; border: none; border-radius: 0 4px 4px 0; padding: 10px 20px; cursor: pointer;">Search</button>
+    </form>
 
     <div class="filter-form">
         <form action="{{ route('announcements.filter') }}" method="GET">

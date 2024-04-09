@@ -47,6 +47,7 @@ Route::get('view-announcements', [AnnouncementController::class, 'viewAnnounceme
 Route::get('/announcements/{announcement}', [AnnouncementController::class, 'showAnnouncement'])->name('announcements.show');
 Route::post('/announcements/{announcement}/reply', [AnnouncementController::class , 'reply'])->name('announcements.reply');
 Route::get('filter', [AnnouncementController::class, 'filter'])->name('announcements.filter');
+Route::get('/search', [AnnouncementController::class, 'search'])->name('announcements.search');
 
 
 
@@ -56,6 +57,8 @@ Route::post('custom-resume', [ResumeController::class, 'customResume'])->name('c
 Route::get('my-resume', [ResumeController::class, 'showResume'])->name('resume.show');
 Route::delete('delete-resume', [ResumeController::class,'deleteResume'])->name('delete.resume');
 Route::get('/resume/{resumeId}', [ResumeController::class , 'showResumeForEmployer'])->name('resume.showResumeToEmployer');
+Route::get('/resume/{id}/edit', [ResumeController::class, 'edit'])->name('edit.resume');
+Route::put('/resume/{resume}', [ResumeController::class, 'update'])->name('update.resume');
 
 
 

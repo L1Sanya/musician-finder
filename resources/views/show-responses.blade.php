@@ -1,4 +1,4 @@
-@extends("main")
+@extends("nav")
 @section('content')
     <!DOCTYPE html>
 <html lang="en">
@@ -20,7 +20,8 @@
         }
         .container {
             max-width: 2000px;
-            margin: 0 auto;
+            margin-left: 150px;
+            margin-right: 150px;
             padding: 20px;
             background-color: #fff;
             border-radius: 8px;
@@ -63,15 +64,15 @@
             margin: 10px 0;
         }
         .message-form {
-            position: absolute;
+            /*position: absolute;*/
             bottom: 1px;
-            left: 50%;
-            transform: translateX(-50%);
             background-color: #fff;
-            padding: 10px;
+            padding: 15px;
             border-radius: 8px;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-            width: calc(100%);
+            /*width: 89%;*/
+            margin-left: 150px;
+            margin-right: 150px;
         }
         textarea {
             width: calc(100% - 24px);

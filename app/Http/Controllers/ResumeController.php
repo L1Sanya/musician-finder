@@ -47,6 +47,7 @@ class ResumeController extends Controller
 
     public function showResume()
     {
+
         if (Auth::check()) {
             $resume = Resume::where('user_id', auth()->id())->first();
             if ($resume) {
@@ -62,7 +63,9 @@ class ResumeController extends Controller
     public function showResumeForEmployer($resumeId)
     {
         if (Auth::check()) {
+
             $resume = Resume::findOrFail($resumeId);
+
             if ($resume) {
                 return view('ShowResumeForEmployer', compact('resume'));
             } else {
@@ -91,4 +94,44 @@ class ResumeController extends Controller
             return redirect('/login')->withErrors("Please login.");
         }
     }
+
+    public function edit()
+    {
+        $skills = Skill::all();
+        $resume = Resume::where('user_id', auth()->id())->first();
+        return view('edit-resume', compact('resume', 'skills'));
+    }
+
+    public function update(Request $request, $resumeId)
+    {
+        if (Auth::check()) {
+            $resume = Resume::findOrFail($resumeId);
+
+            if ($resume) {
+                if ($resume->user_id == auth()->id()) {
+                    $request->validate([
+                        'experience' => 'required|string',
+                        'info' => 'nullable|string',
+                        'skills' => 'nullable|array',
+                    ]);
+
+                    $resume->update([
+                        'experience' => $request->experience,
+                        'info' => $request->info,
+                    ]);
+
+                    $resume->skills()->sync($request->skills);
+
+                    return redirect()->route('resume.show', $resume->id)->with('success', 'Resume updated successfully.');
+                } else {
+                    return redirect()->route('resume.show')->withErrors("You don't have permission to edit this resume.");
+                }
+            } else {
+                return redirect()->route('resume.show')->withErrors("Resume not found.");
+            }
+        } else {
+            return redirect('/login')->withErrors("Please login.");
+        }
+    }
+
 }
