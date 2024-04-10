@@ -31,8 +31,8 @@
                                 <div class="form-group mb-3">
                                     <label for="role">Select Role:</label>
                                     <select name="role" id="role" class="form-control" required>
-                                        <option value="1">Candidate</option>
-                                        <option value="2">Employer</option>
+                                        <option value="1">candidate</option>
+                                        <option value="2">employer</option>
                                     </select>
                                 </div>
                                 <div class="d-grid mx-auto">

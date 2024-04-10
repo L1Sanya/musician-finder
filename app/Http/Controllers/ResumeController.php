@@ -104,16 +104,18 @@ class ResumeController extends Controller
 
     public function update(Request $request, $resumeId)
     {
+
+        $request->validate([
+            'experience' => 'required|string',
+            'info' => 'nullable|string',
+            'skills' => 'nullable|array',
+        ]);
+
         if (Auth::check()) {
             $resume = Resume::findOrFail($resumeId);
 
             if ($resume) {
                 if ($resume->user_id == auth()->id()) {
-                    $request->validate([
-                        'experience' => 'required|string',
-                        'info' => 'nullable|string',
-                        'skills' => 'nullable|array',
-                    ]);
 
                     $resume->update([
                         'experience' => $request->experience,

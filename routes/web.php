@@ -58,7 +58,7 @@ Route::get('my-resume', [ResumeController::class, 'showResume'])->name('resume.s
 Route::delete('delete-resume', [ResumeController::class,'deleteResume'])->name('delete.resume');
 Route::get('/resume/{resumeId}', [ResumeController::class , 'showResumeForEmployer'])->name('resume.showResumeToEmployer');
 Route::get('/resume/{id}/edit', [ResumeController::class, 'edit'])->name('edit.resume');
-Route::put('/resume/{resume}', [ResumeController::class, 'update'])->name('update.resume');
+Route::put('/resume/{resume}', [ResumeController::class, 'update'])->name('update.resume')->middleware('auth');
 
 
 
