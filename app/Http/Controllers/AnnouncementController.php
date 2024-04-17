@@ -9,16 +9,14 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Announcement;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class AnnouncementController extends Controller
 {
     public function placeAnnouncementForm()
     {
-        if (Auth::check()) {
             $skills = Skill::all();
             return view('place-announcement', compact('skills'));
-        } else
-            return redirect('/login')->withSuccess("Please login");
     }
 
 
@@ -43,7 +41,7 @@ class AnnouncementController extends Controller
         $announcements = Announcement::query();
         $locations = Announcement::distinct()->pluck('location');
 
-        if (Auth::check() && Auth::user()->role->name == 'candidate' && Auth::user()->resume) {
+        if (Auth::user()->role->name == 'candidate' && Auth::user()->resume) {
             $resumeSkills = Auth::user()->resume->skills->pluck('id')->toArray();
             $resumeLocation = Auth::user()->resume->location;
 
@@ -66,34 +64,35 @@ class AnnouncementController extends Controller
 
     public function reply(Request $request, Announcement $announcement)
     {
-        $messages = Message::all();
+        $user = auth()->user();
 
-        if (Auth::check()) {
-            $user = auth()->user();
+        if ($user->resume) {
 
-            if ($user->resume) {
+            $response = new Response();
+            $response->announcement_id = $announcement->id;
+            $response->resume_id = $user->resume->id;
+            $response->save();
 
-                $response = new Response();
-                $response->announcement_id = $announcement->id;
-                $response->resume_id = $user->resume->id;
-                $response->save();
+            $messageContent = $request->input('message_content');
+            $messageFromSender = new Message();
+            $messageFromSender->sender_id = $user->id; // Отправитель - текущий пользователь
+            $messageFromSender->receiver_id = $announcement->creator_id; // Получатель
+            $messageFromSender->response_id = $response->id;
+            $messageFromSender->content = $messageContent;
+            $messageFromSender->save();
 
-                $messageContent = $request->input('message_content');
-                $messageFromSender = new Message();
-                $messageFromSender->sender_id = $user->getAuthIdentifier();
-                $messageFromSender->receiver_id = $announcement->creator_id;
-                $messageFromSender->response_id = $response->id;
-                $messageFromSender->content = $messageContent;
-                $messageFromSender->save();
+            $receiverEmail = User::find($announcement->creator_id)->email;
+            $receiverName = User::find($announcement->creator_id)->name;
+            $data = array('name' => $receiverEmail); // Передаем email в шаблон
+            Mail::send(['text' => 'mail'], $data, function($message) use ($receiverEmail, $user, $receiverName) {
+                $message->to($receiverEmail,$receiverName)->subject('Hello');
+                $message->from($user->email, $user->name); // Отправитель
+            });
 
-                return view('main');
-            } else {
-
-                return redirect()->route('resume')->with('error', 'Please create your resume first');
-            }
+            return view('main');
+        } else {
+            return redirect()->route('resume')->with('error', 'Please create your resume first');
         }
-
-        return redirect()->route('main')->with('error', 'Please login to reply');
     }
 
     public function filter(Request $request)

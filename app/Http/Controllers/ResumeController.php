@@ -78,7 +78,6 @@ class ResumeController extends Controller
 
     public function deleteResume()
     {
-        if (Auth::check()) {
             $user_id = auth()->id();
             $resume = Resume::where('user_id', $user_id)->first();
             if ($resume) {
@@ -90,9 +89,6 @@ class ResumeController extends Controller
             } else {
                 return redirect()->back()->withErrors("Resume not found.");
             }
-        } else {
-            return redirect('/login')->withErrors("Please login.");
-        }
     }
 
     public function edit()
@@ -111,7 +107,6 @@ class ResumeController extends Controller
             'skills' => 'nullable|array',
         ]);
 
-        if (Auth::check()) {
             $resume = Resume::findOrFail($resumeId);
 
             if ($resume) {
@@ -131,9 +126,6 @@ class ResumeController extends Controller
             } else {
                 return redirect()->route('resume.show')->withErrors("Resume not found.");
             }
-        } else {
-            return redirect('/login')->withErrors("Please login.");
-        }
     }
 
 }

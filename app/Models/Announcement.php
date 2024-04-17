@@ -27,21 +27,21 @@ class Announcement extends Model
 
     public function creator()
     {
-        return $this->belongsTo(User::class, 'creator_id'); // Объявление принадлежит пользователю-создателю
+        return $this->belongsTo(User::class, 'creator_id');
     }
 
     public function skills()
     {
-        return $this->belongsToMany(Skill::class, 'announcement_skill'); // Объявление имеет много навыков
+        return $this->belongsToMany(Skill::class, 'announcement_skill');
     }
 
     public function responses()
     {
-        return $this->hasMany(Response::class); // Объявление имеет много откликов
+        return $this->hasMany(Response::class);
     }
 
     public function messages()
     {
-        return $this->hasMany(Message::class); // Объявление имеет много сообщений
+        return $this->hasMany(Message::class);
     }
 }

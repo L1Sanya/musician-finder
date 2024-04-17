@@ -13,7 +13,7 @@ class ResponseController extends Controller
 {
     public function show(Response $response)
     {
-        if (Auth::check()) {
+
             $user = Auth::user();
             if ($user->role->name == 'employer') {
                 $receiver_id = $response->announcement->responses->first()->resume->user_id;
@@ -31,11 +31,8 @@ class ResponseController extends Controller
             $messages = $response->messages;
             $response_id = $response->id;
 
-
             return view('show-responses', compact('response', 'messages', 'sender_id', 'receiver_id', 'response_id', 'interlocutorName')); // Включаем $response_id в компакт
-        } else {
-            return redirect()->back()->with('error', 'You are not authorized to view this conversation');
-        }
+
     }
 
     public function showAllResponses(Request $request, )
