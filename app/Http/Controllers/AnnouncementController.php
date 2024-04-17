@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Announcement;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class AnnouncementController extends Controller
@@ -67,33 +68,42 @@ class AnnouncementController extends Controller
         $user = auth()->user();
 
         if ($user->resume) {
+            DB::beginTransaction();
 
-            $response = new Response();
-            $response->announcement_id = $announcement->id;
-            $response->resume_id = $user->resume->id;
-            $response->save();
+            try {
+                $response = new Response();
+                $response->announcement_id = $announcement->id;
+                $response->resume_id = $user->resume->id;
+                $response->save();
 
-            $messageContent = $request->input('message_content');
-            $messageFromSender = new Message();
-            $messageFromSender->sender_id = $user->id; // Отправитель - текущий пользователь
-            $messageFromSender->receiver_id = $announcement->creator_id; // Получатель
-            $messageFromSender->response_id = $response->id;
-            $messageFromSender->content = $messageContent;
-            $messageFromSender->save();
+                $messageContent = $request->input('message_content');
+                $messageFromSender = new Message();
+                $messageFromSender->sender_id = $user->id;
+                $messageFromSender->receiver_id = $announcement->creator_id;
+                $messageFromSender->response_id = $response->id;
+                $messageFromSender->content = $messageContent;
+                $messageFromSender->save();
 
-            $receiverEmail = User::find($announcement->creator_id)->email;
-            $receiverName = User::find($announcement->creator_id)->name;
-            $data = array('name' => $receiverEmail); // Передаем email в шаблон
-            Mail::send(['text' => 'mail'], $data, function($message) use ($receiverEmail, $user, $receiverName) {
-                $message->to($receiverEmail,$receiverName)->subject('Hello');
-                $message->from($user->email, $user->name); // Отправитель
-            });
+                $receiverEmail = User::find($announcement->creator_id)->email;
+                $receiverName = User::find($announcement->creator_id)->name;
+                $data = array('name' => $receiverEmail);
+                Mail::send(['text' => 'mail'], $data, function($message) use ($receiverEmail, $user, $receiverName) {
+                    $message->to($receiverEmail, $receiverName)->subject('Hello');
+                    $message->from($user->email, $user->name);
+                });
+
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollback();
+                return redirect()->route('resume')->with('error', 'An error occurred. Please try again.');
+            }
 
             return view('main');
         } else {
             return redirect()->route('resume')->with('error', 'Please create your resume first');
         }
     }
+
 
     public function filter(Request $request)
     {
