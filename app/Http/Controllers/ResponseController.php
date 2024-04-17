@@ -6,63 +6,34 @@ use App\Models\Announcement;
 use App\Models\Message;
 use App\Models\Response;
 use App\Models\User;
+use App\Services\ResponseService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ResponseController extends Controller
 {
+    protected $responseService;
+
+    public function __construct(ResponseService $responseService)
+    {
+        $this->responseService = $responseService;
+    }
+
     public function show(Response $response)
     {
+        $data = $this->responseService->prepareResponseData($response);
 
-            $user = Auth::user();
-            if ($user->role->name == 'employer') {
-                $receiver_id = $response->announcement->responses->first()->resume->user_id;
-                $interlocutorId = $receiver_id;
-                $interlocutor = User::findOrFail($interlocutorId);
-                $interlocutorName = $interlocutor->name;
-            } elseif ($user->role->name == 'candidate') {
-                $receiver_id = $response->announcement->creator_id;
-                $interlocutorId = $receiver_id;
-                $interlocutor = User::findOrFail($interlocutorId);
-                $interlocutorName = $interlocutor->name;
-            }
-
-            $sender_id = $user->id;
-            $messages = $response->messages;
-            $response_id = $response->id;
-
-            return view('show-responses', compact('response', 'messages', 'sender_id', 'receiver_id', 'response_id', 'interlocutorName')); // Включаем $response_id в компакт
-
+        return view('show-responses', $data);
     }
 
-    public function showAllResponses(Request $request, )
+    public function showAllResponses(Request $request)
     {
-        $user = Auth::user();
+        $user = auth()->user();
         $announcementId = $request->query('announcement_id');
         $announcement = Announcement::find($announcementId);
+        $responses = $this->responseService->getUserResponses($user);
 
-        if ($user) {
-            $responses = Response::whereHas('announcement', function($query) use ($user) {
-                $query->where('creator_id', $user->id);
-            });
-
-            if ($user->resume) {
-                $responses->orWhere('resume_id', $user->resume->id);
-            }
-
-            $responses = $responses->get();
-
-            return view('responses.showAll', compact('responses', 'announcement'));
-        } else {
-
-            return redirect()->route('login');
-        }
-    }
-
-
-    public function reject(Request $request, $responseId)
-    {
-
+        return view('responses.showAll', compact('responses', 'announcement'));
     }
 
 }

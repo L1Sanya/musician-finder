@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\AnnouncementResponseController;
 use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ResponseController;
@@ -46,9 +47,13 @@ Route::get('place-announcement', [AnnouncementController::class, 'placeAnnouncem
 Route::post('customAnnouncement', [AnnouncementController::class, 'customAnnouncement'])->name('customAnnouncement')->middleware('auth');
 Route::get('view-announcements', [AnnouncementController::class, 'viewAnnouncements'])->name('announcements.view');
 Route::get('/announcements/{announcement}', [AnnouncementController::class, 'showAnnouncement'])->name('announcements.show')->middleware('auth');
-Route::post('/announcements/{announcement}/reply', [AnnouncementController::class , 'reply'])->name('announcements.reply')->middleware('auth');
 Route::get('filter', [AnnouncementController::class, 'filter'])->name('announcements.filter')->middleware('auth');
 Route::get('/search', [AnnouncementController::class, 'search'])->name('announcements.search')->middleware('auth');
+
+
+
+///AnnouncementResponse
+Route::post('/announcements/{announcement}/reply', [AnnouncementResponseController::class , 'response'])->name('announcements.reply')->middleware('auth');
 
 
 

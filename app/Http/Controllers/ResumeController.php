@@ -5,65 +5,46 @@ namespace App\Http\Controllers;
 use App\Models\Announcement;
 use App\Models\Resume;
 use App\Models\Skill;
+use App\Services\ResumeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ResumeController extends Controller
 {
+    protected $resumeService;
+
+    public function __construct(ResumeService $resumeService)
+    {
+        $this->resumeService = $resumeService;
+    }
+
     public function index()
     {
-        if (Auth::check()) {
             $skills = Skill::all();
             return view('custom-resume-form', compact('skills'));
-        } else
-            return redirect('/login')->withSuccess("Please login");
-
     }
 
     public function customResume(Request $request)
     {
-        if (Auth::check()) {
-            $user_id = auth()->id();
-            $resume = Resume::where('user_id', $user_id)->first();
+        $userId = auth()->id();
+        $this->resumeService->createOrUpdateResume($userId, $request);
 
-            if ($resume) {
-                $resume->skills()->detach();
-                $resume->delete();
-            }
-
-            $resume = new Resume();
-            $resume->user_id = $user_id;
-            $resume->experience = $request->input('experience');
-            $resume->info = $request->input('info');
-            $resume->save();
-
-            $resume->skills()->attach($request->input('skills'));
-
-            return redirect("/main")->with('You have created the post');
-
-        } else
-            return redirect("/login")->with('please login');
+        return redirect("/main")->with('success', 'You have created the post');
     }
 
     public function showResume()
     {
+        $resume = $this->resumeService->getUserResume(auth()->id());
 
-        if (Auth::check()) {
-            $resume = Resume::where('user_id', auth()->id())->first();
-            if ($resume) {
-                return view('resume', compact('resume'));
-            } else {
-                return redirect("resume")->withErrors("Resume not found.");
-            }
+        if ($resume) {
+            return view('resume', compact('resume'));
         } else {
-            return redirect('/login')->withErrors("Please login.");
+            return redirect("resume")->withErrors("Resume not found.");
         }
     }
 
     public function showResumeForEmployer($resumeId)
     {
-        if (Auth::check()) {
-
             $resume = Resume::findOrFail($resumeId);
 
             if ($resume) {
@@ -71,9 +52,6 @@ class ResumeController extends Controller
             } else {
                 return redirect()->route('resume.index')->withErrors("Resume not found.");
             }
-        } else {
-            return redirect('/login')->withErrors("Please login.");
-        }
     }
 
     public function deleteResume()
@@ -100,32 +78,19 @@ class ResumeController extends Controller
 
     public function update(Request $request, $resumeId)
     {
-
         $request->validate([
             'experience' => 'required|string',
             'info' => 'nullable|string',
             'skills' => 'nullable|array',
         ]);
 
-            $resume = Resume::findOrFail($resumeId);
+        try {
+            $resume = $this->resumeService->updateResume($resumeId, $request);
 
-            if ($resume) {
-                if ($resume->user_id == auth()->id()) {
-
-                    $resume->update([
-                        'experience' => $request->experience,
-                        'info' => $request->info,
-                    ]);
-
-                    $resume->skills()->sync($request->skills);
-
-                    return redirect()->route('resume.show', $resume->id)->with('success', 'Resume updated successfully.');
-                } else {
-                    return redirect()->route('resume.show')->withErrors("You don't have permission to edit this resume.");
-                }
-            } else {
-                return redirect()->route('resume.show')->withErrors("Resume not found.");
-            }
+            return redirect()->route('resume.show', $resume->id)->with('success', 'Resume updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('resume.show')->withErrors($e->getMessage());
+        }
     }
 
 }
