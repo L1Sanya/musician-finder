@@ -79,10 +79,3 @@ Route::get('/responses/{response}', [ResponseController::class, 'show'])->name('
 Route::post('/responses/{responseId}/reject', [ResponseController::class, 'reject'])->name('responses.reject')->middleware('auth');
 
 
-
-//Mail
-Route::get('send-basic-email',[MailController::class, 'basic_email']);
-Route::get('send-html-email',[MailController::class, 'html_email']);
-Route::get('send-attachment-email',[MailController::class, 'attachment_email']);
-
-

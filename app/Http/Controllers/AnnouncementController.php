@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Mail;
 
 class AnnouncementController extends Controller
 {
-
     protected $announcementService;
 
     public function __construct(AnnouncementService $announcementService)

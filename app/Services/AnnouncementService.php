@@ -37,6 +37,9 @@ class AnnouncementService
                     $query->whereIn('skills.id', $resumeSkills);
                 })->orWhere('location', $resumeLocation);
             });
+            $announcements = $announcements->get();
+
+            return compact('announcements', 'skills', 'locations');
         }
 
         $announcements = $announcements->get();
