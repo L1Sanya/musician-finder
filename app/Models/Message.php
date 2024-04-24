@@ -25,7 +25,7 @@ class Message extends Model
         'updated_at' => 'datetime',
     ];
 
-    public function sender()
+    public function sender(): BelongsTo
     {
         return $this->belongsTo(User::class, 'sender_id');
     }
@@ -35,7 +35,7 @@ class Message extends Model
         return $this->belongsTo(User::class, 'receiver_id');
     }
 
-    public function response()
+    public function response(): BelongsTo
     {
         return $this->belongsTo(Response::class);
     }

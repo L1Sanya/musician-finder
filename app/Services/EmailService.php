@@ -7,13 +7,14 @@ use Illuminate\Support\Facades\Mail;
 
 class EmailService
 {
-    public function sendEmailNotification($announcement, $user)
+    public function sendEmailNotification($announcement, $user): void
     {
-        $receiver = User::find($announcement->creator_id);
-        $data = ['name' => $receiver->email];
+        $receiverEmail = User::find($announcement->creator_id)->email;
+        $receiverName = User::find($announcement->creator_id)->name;
+        $data = array('name' => $receiverEmail);
 
-        Mail::send(['text' => 'mail'], $data, function ($message) use ($receiver, $user) {
-            $message->to($receiver->email, $receiver->name)->subject('Hello');
+        Mail::send(['text' => 'mail'], $data, function($message) use ($receiverEmail, $user, $receiverName) {
+            $message->to($receiverEmail, $receiverName)->subject('Hello');
             $message->from($user->email, $user->name);
         });
     }

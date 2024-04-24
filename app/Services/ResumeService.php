@@ -3,10 +3,11 @@
 namespace App\Services;
 
 use App\Models\Resume;
+use Exception;
 
 class ResumeService
 {
-    public function createOrUpdateResume($userId, $requestData)
+    public function createOrUpdateResume($userId, $requestData): Resume
     {
         $resume = Resume::where('user_id', $userId)->first();
 
@@ -14,12 +15,10 @@ class ResumeService
             $this->deleteResume($resume);
         }
 
-        $resume = $this->createResume($userId, $requestData);
-
-        return $resume;
+        return $this->createResume($userId, $requestData);
     }
 
-    protected function createResume($userId, $requestData)
+    protected function createResume($userId, $requestData): Resume
     {
         $resume = new Resume();
         $resume->user_id = $userId;
@@ -32,7 +31,7 @@ class ResumeService
         return $resume;
     }
 
-    protected function deleteResume($resume)
+    protected function deleteResume($resume): void
     {
         $resume->skills()->detach();
         $resume->delete();
@@ -43,12 +42,15 @@ class ResumeService
         return Resume::where('user_id', $userId)->first();
     }
 
+    /**
+     * @throws Exception
+     */
     public function updateResume($resumeId, $requestData)
     {
         $resume = Resume::findOrFail($resumeId);
 
         if ($resume->user_id != auth()->id()) {
-            throw new \Exception("You don't have permission to edit this resume.");
+            throw new Exception("You don't have permission to edit this resume.");
         }
 
         $resume->update([

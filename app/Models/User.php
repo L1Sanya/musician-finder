@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\Resume;
+
 
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -46,32 +48,32 @@ class User extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
     ];
 
-    public function resume()
+    public function resume(): HasOne
     {
         return $this->hasOne(Resume::class); // Один пользователь имеет одно резюме
     }
 
-    public function sender()
+    public function sender(): HasMany
     {
         return $this->hasMany(Message::class, 'sender_id'); // Пользователь отправляет много сообщений
     }
 
-    public function receiver()
+    public function receiver(): HasMany
     {
         return $this->hasMany(Message::class, 'receiver_id'); // Пользователь получает много сообщений
     }
 
-    public function role()
+    public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);
     }
 
-    public function isCandidate()
+    public function isCandidate(): bool
     {
         return $this->role->name === 'candidate';
     }
 
-    public function isEmployer()
+    public function isEmployer(): bool
     {
         return $this->role->name === 'employer';
     }

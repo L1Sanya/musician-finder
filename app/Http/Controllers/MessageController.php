@@ -2,17 +2,14 @@
 
 namespace App\Http\Controllers;
 
-
-use App\Models\Message;
-use App\Models\Response;
 use App\Services\MessageService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class MessageController extends Controller
 {
     public function send(Request $request,
-                         MessageService $messageService)
+                         MessageService $messageService): RedirectResponse
     {
         $request->validate([
             'sender_id' => 'required',

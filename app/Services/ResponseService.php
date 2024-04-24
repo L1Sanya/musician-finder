@@ -13,17 +13,15 @@ use Illuminate\Support\Facades\Mail;
 
 class ResponseService
 {
-    public function createResponse($announcement, $user)
+    public function createResponse($announcement, $user): Response
     {
-        $response = new Response();
-        $response->announcement_id = $announcement->id;
-        $response->resume_id = $user->resume->id;
-        $response->save();
-
-        return $response;
+        return Response::create([
+            'announcement_id' => $announcement->id,
+            'resume_id' => $user->resume->id,
+        ]);
     }
 
-    public function prepareResponseData($response)
+    public function prepareResponseData($response): array
     {
         $user = Auth::user();
         $roleName = $user->role->name;

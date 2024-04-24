@@ -2,28 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Message;
-use App\Models\Response;
 use App\Models\Skill;
-use App\Models\User;
 use App\Services\AnnouncementService;
-use App\Services\MessageService;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use App\Models\Announcement;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
+
 
 class AnnouncementController extends Controller
 {
-    protected $announcementService;
+    protected AnnouncementService $announcementService;
 
     public function __construct(AnnouncementService $announcementService)
     {
         $this->announcementService = $announcementService;
     }
 
-    public function placeAnnouncementForm()
+    public function placeAnnouncementForm(): Factory|Application|View|\Illuminate\Contracts\Foundation\Application
     {
             $skills = Skill::all();
             return view('place-announcement', compact('skills'));
@@ -37,27 +34,30 @@ class AnnouncementController extends Controller
         return redirect("/main")->withSuccess('You have created the post');
     }
 
-    public function viewAnnouncements()
+    public function viewAnnouncements(): Factory|Application|View|\Illuminate\Contracts\Foundation\Application
     {
         $data = $this->announcementService->getAnnouncements();
 
         return view('view-announcements', $data);
     }
 
-    public function showAnnouncement(Announcement $announcement)
+    public function showAnnouncement(Announcement $announcement): Factory|Application|View|\Illuminate\Contracts\Foundation\Application
     {
         return view('show-announcement', compact('announcement'));
     }
 
 
-    public function filter(Request $request)
+    public function filter(Request $request): Factory|Application|View|\Illuminate\Contracts\Foundation\Application
     {
-        $data = $this->announcementService->filterAnnouncements($request);
+        $selectedSkillId = $request->input('skill');
+        $selectedLocation = $request->input('location');
+
+        $data = $this->announcementService->filterAnnouncements($selectedSkillId, $selectedLocation);
 
         return view('view-announcements', $data);
     }
 
-    public function search(Request $request)
+    public function search(Request $request): Factory|Application|View|\Illuminate\Contracts\Foundation\Application
     {
         $data = $this->announcementService->searchAnnouncements($request);
 

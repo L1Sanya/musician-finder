@@ -1,14 +1,19 @@
 <?php
 namespace App\Http\Controllers;
 use App\Models\Role;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 class CustomAuthController extends Controller
 {
-    public function index()
+    public function index(): Factory|Application|View|\Illuminate\Contracts\Foundation\Application
     {
         return view('auth.login');
     }
@@ -26,7 +31,7 @@ class CustomAuthController extends Controller
         }
         return redirect("login")->withSuccess('Login details are not valid');
     }
-    public function registration()
+    public function registration(): Factory|Application|View|\Illuminate\Contracts\Foundation\Application
     {
         return view('auth.register');
     }
@@ -58,11 +63,11 @@ class CustomAuthController extends Controller
 
         ]);
     }
-    public function dashboard()
+    public function dashboard(): Factory|Application|View|\Illuminate\Contracts\Foundation\Application
     {
             return view('auth.dashboard');
     }
-    public function signOut()
+    public function signOut(): Application|Redirector|\Illuminate\Contracts\Foundation\Application|RedirectResponse
     {
         Session::flush();
         Auth::logout();

@@ -6,13 +6,13 @@ use App\Models\Message;
 
 class MessageService
 {
-    public function sendMessage($senderId, $receiverId, $responseId, $content)
+    public function sendMessage($senderId, $receiverId, $responseId, $content): void
     {
-        $message = new Message();
-        $message->sender_id = $senderId;
-        $message->receiver_id = $receiverId;
-        $message->response_id = $responseId;
-        $message->content = $content;
-        $message->save();
+        Message::create([
+            'sender_id' => $senderId,
+            'receiver_id' => $receiverId,
+            'response_id' => $responseId,
+            'content' => $content,
+        ]);
     }
 }

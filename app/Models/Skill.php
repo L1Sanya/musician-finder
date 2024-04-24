@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Skill extends Model
 {
@@ -21,12 +22,12 @@ class Skill extends Model
         'updated_at' => 'datetime',
     ];
 
-    public function resumes()
+    public function resumes(): BelongsToMany
     {
         return $this->belongsToMany(Resume::class, 'resume_skills');
     }
 
-    public function announcements()
+    public function announcements(): BelongsToMany
     {
         return $this->belongsToMany(Announcement::class, 'announcement_skill');
     }

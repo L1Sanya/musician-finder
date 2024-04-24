@@ -16,7 +16,7 @@ $callback = function ($msg) {
     echo ' [x] Received ', $msg->body, "\n";
 };
 
-$channel->basic_consume('hello', '', false, true, false, false, $callback);
+$channel->basic_consume('', '', false, true, false, false, $callback);
 
 try {
     $channel->consume();
