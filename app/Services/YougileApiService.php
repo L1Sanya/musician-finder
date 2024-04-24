@@ -9,9 +9,9 @@ class YougileApiService
     public function getCompanyId(): mixed
     {
         $data = [
-            "login" => "lisanya2702@gmail.com",
-            "password" => "lunikook",
-            "name" => "LiSanya"
+            "login" => env('YOUGILE_LOGIN'),
+            "password" => env('YOUGILE_PASSWORD'),
+            "name" => env('YOUGILE_NAME')
         ];
 
         $response = Http::withHeaders([
@@ -23,7 +23,7 @@ class YougileApiService
 
     public function getToken(): string
     {
-        return 'efY8GgfenqW8MeKpmFuDzqEFSY3E-if2CLfCLpkMBTs+QXiCAXLllnPSQPBERQDf';
+        return env('YOUGILE_API_TOKEN');
     }
 
     public function getColumnsList(): mixed

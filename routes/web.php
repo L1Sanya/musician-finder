@@ -8,8 +8,6 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ResponseController;
 use App\Http\Controllers\ResumeController;
 use App\Http\Controllers\MainController;
-use App\Http\Controllers\MailController;
-use App\Services\YougileApiService;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -84,10 +82,11 @@ Route::post('/responses/{responseId}/reject', [ResponseController::class, 'rejec
 ///
 Route::get('/ogonek', [MainController::class, 'ogonek'])->name('ogonek');
 
-Route::get('/getCompanyId', [YougileApiService::class, 'getCompanyId'])->name('api.getCompanyId');
-Route::get('/getToken', [YougileApiService::class, 'getToken'])->name('api.getToken');
-Route::get('/getColumnsList', [YougileApiService::class, 'getColumnsList'])->name('api.getColumnsList');
-Route::get('/createTask', [YougileApiService::class, 'createNewResponseTask'])->name('api.createTask');
+
+Route::prefix('api')->group(function () {
+    Route::get('/company-id', [ApiController::class, 'getCompanyId']);
+    Route::get('/columns-list', [ApiController::class, 'getColumnsList']);
+});
 
 
 
