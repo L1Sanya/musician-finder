@@ -20,11 +20,11 @@ class ResumeService
 
     protected function createResume($userId, $requestData): Resume
     {
-        $resume = new Resume();
-        $resume->user_id = $userId;
-        $resume->experience = $requestData->input('experience');
-        $resume->info = $requestData->input('info');
-        $resume->save();
+        $resume = Resume::create([
+            'user_id' => $userId,
+            'experience' => $requestData->input('experience'),
+            'info' => $requestData->input('info'),
+        ]);
 
         $resume->skills()->attach($requestData->input('skills'));
 
