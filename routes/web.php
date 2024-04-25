@@ -83,10 +83,6 @@ Route::post('/responses/{responseId}/reject', [ResponseController::class, 'rejec
 Route::get('/ogonek', [MainController::class, 'ogonek'])->name('ogonek');
 
 
-Route::prefix('api')->group(function () {
-    Route::get('/company-id', [ApiController::class, 'getCompanyId']);
-    Route::get('/columns-list', [ApiController::class, 'getColumnsList']);
-});
 
 
 

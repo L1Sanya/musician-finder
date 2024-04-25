@@ -45,18 +45,6 @@ class AnnouncementService
         return compact('announcements', 'skills', 'locations');
     }
 
-    public function filterAnnouncements($selectedSkillId, $selectedLocation): array
-    {
-        $skills = Skill::all();
-        $locations = Announcement::distinct()->pluck('location')->toArray();
-
-        $announcementsBySkills = $this->filterBySkills($selectedSkillId);
-        $announcementsByLocation = $this->filterByLocation($selectedLocation);
-
-        $announcements = $announcementsBySkills->merge($announcementsByLocation);
-
-        return compact('announcements', 'skills', 'locations');
-    }
 
     public function searchAnnouncements($requestData): array
     {
@@ -71,17 +59,29 @@ class AnnouncementService
         return compact('announcements');
     }
 
-
-    public function filterBySkills($selectedSkillId): Collection
+    public function filterAnnouncements($requestData): array
     {
-        return Announcement::whereHas('skills', function ($q) use ($selectedSkillId) {
-            $q->where('skills.id', $selectedSkillId);
-        })->get();
-    }
+        $skills = Skill::all();
+        $locations = Announcement::distinct()->pluck('location')->toArray();
 
-    public function filterByLocation($selectedLocation): Collection
-    {
-        return Announcement::where('location', $selectedLocation)->get();
+        $selectedSkill = $requestData->input('skill');
+        $selectedLocation = $requestData->input('location');
+
+        $query = Announcement::query();
+
+        if ($selectedSkill) {
+            $query->whereHas('skills', function ($q) use ($selectedSkill) {
+                $q->where('skills.id', $selectedSkill);
+            });
+        }
+
+        if ($selectedLocation) {
+            $query->where('location', $selectedLocation);
+        }
+
+        $announcements = $query->get();
+
+        return compact('announcements', 'skills', 'locations');
     }
 
     protected function searchByTitle($query)

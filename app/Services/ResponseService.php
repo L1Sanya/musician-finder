@@ -2,14 +2,10 @@
 
 namespace App\Services;
 
-use App\Models\Announcement;
-use App\Models\Message;
 use App\Models\Response;
 use App\Models\User;
-use http\Env\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
+
 
 class ResponseService
 {
@@ -27,19 +23,19 @@ class ResponseService
         $roleName = $user->role->name;
 
         if ($roleName == 'employer') {
-            $receiverId = $response->announcement->responses->first()->resume->user_id;
+            $receiver_id = $response->announcement->responses->first()->resume->user_id;
         } elseif ($roleName == 'candidate') {
-            $receiverId = $response->announcement->creator_id;
+            $receiver_id = $response->announcement->creator_id;
         }
 
-        $interlocutor = User::findOrFail($receiverId);
+        $interlocutor = User::findOrFail($receiver_id);
         $interlocutorName = $interlocutor->name;
 
-        $senderId = $user->id;
+        $sender_id = $user->id;
         $messages = $response->messages;
-        $responseId = $response->id;
+        $response_id = $response->id;
 
-        return compact('response', 'messages', 'senderId', 'receiverId', 'responseId', 'interlocutorName');
+        return compact('response', 'messages', 'sender_id', 'receiver_id', 'response_id', 'interlocutorName');
     }
 
     public function getUserResponses($user)

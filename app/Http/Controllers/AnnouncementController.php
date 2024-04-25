@@ -49,10 +49,7 @@ class AnnouncementController extends Controller
 
     public function filter(Request $request): Factory|Application|View|\Illuminate\Contracts\Foundation\Application
     {
-        $selectedSkillId = $request->input('skill');
-        $selectedLocation = $request->input('location');
-
-        $data = $this->announcementService->filterAnnouncements($selectedSkillId, $selectedLocation);
+        $data = $this->announcementService->filterAnnouncements($request);
 
         return view('view-announcements', $data);
     }
