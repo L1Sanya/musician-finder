@@ -28,7 +28,7 @@ class ResumeController extends Controller
         $resume = Resume::where('user_id', $userId)->first();
 
         if ($resume) {
-            $this->deleteResume($resume);
+            $this->delete();
         }
 
         $resume = Resume::create([
