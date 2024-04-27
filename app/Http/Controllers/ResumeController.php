@@ -72,7 +72,7 @@ class ResumeController extends Controller
                 $resume->skills()->detach();
                 $resume->delete();
 
-                return redirect("/main")->with('You have deleted the resume');
+                return redirect("/my-resume")->with('You have deleted the resume');
             } else {
                 return redirect()->back()->withErrors("Resume not found.");
             }
