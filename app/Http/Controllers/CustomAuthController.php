@@ -24,6 +24,7 @@ class CustomAuthController extends Controller
             'email' => 'required',
             'password' => 'required',
         ]);
+
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
             return redirect()->intended('main')
@@ -47,7 +48,6 @@ class CustomAuthController extends Controller
         $data = $request->all();
         $user = $this->create($data);
 
-        // Присваиваем выбранную роль пользователю
         $role = Role::where('name', $request->role)->first();
         $user->roles()->attach($role);
 
@@ -60,13 +60,9 @@ class CustomAuthController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'role_id' => $data['role'],
-
         ]);
     }
-    public function dashboard(): Factory|Application|View|\Illuminate\Contracts\Foundation\Application
-    {
-            return view('auth.dashboard');
-    }
+
     public function signOut(): Application|Redirector|\Illuminate\Contracts\Foundation\Application|RedirectResponse
     {
         Session::flush();

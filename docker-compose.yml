@@ -43,8 +43,8 @@ services:
         hostname: rabbitmq
         restart: always
         environment:
-            - RABBITMQ_DEFAULT_USER=user
-            - RABBITMQ_DEFAULT_PASS=user
+            - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+            - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
         volumes:
             - ./rabbitmq:/var/lib/rabbitmq
         ports:

@@ -75,7 +75,7 @@
     <h1>Responses to Announcements</h1>
     @foreach($responses as $response)
         <div class="response">
-            <h2><a href="{{ route('announcements.show', ['announcement' => $response->announcement->id]) }}">{{$response->announcement->title}}</a></h2>
+            <h2><a href="{{ route('announcements.show', ['announcementId' => $response->announcement->id]) }}">{{$response->announcement->title}}</a></h2>
             <h3>Description:</h3>
             <p>{{ $response->announcement->description }}</p>
             @if($response->skills)
@@ -91,12 +91,12 @@
                 <p>{{ $response->announcement->creator->name }}</p>
             @elseif(Auth::user()->role->name == 'employer')
                 <h3>Resume of Candidate:</h3>
-                <a class='dialog' href="{{ route('resume.showResumeToEmployer', ['resumeId' => $response->resume->id]) }}">{{ $response->resume->user->name }}</a>
+                <a class='dialog' href="{{ route('resume.showToEmployer', ['resumeId' => $response->resume->id]) }}">{{ $response->resume->user->name }}</a>
 
                 <br>
             @endif
             <br>
-            <a class='dialog' href="{{ route('responses.show', ['response' => $response->id]) }}">Go to dialog</a>
+            <a class='dialog' href="{{ route('responses.show', ['responseId' => $response->id]) }}">Go to dialog</a>
         </div>
     @endforeach
     <!-- Add more responses as needed -->

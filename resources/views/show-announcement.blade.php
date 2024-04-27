@@ -89,21 +89,21 @@
 <body>
 <div class="container">
     <div class="announcement">
-        <h1>{{ $announcement->title }}</h1>
-        <p>{{ $announcement->description }}</p>
+        <h1>{{ $announcementId->title }}</h1>
+        <p>{{ $announcementId->description }}</p>
         <h3 class="skills-heading">Skills:</h3>
         <ul>
-            @foreach($announcement->skills as $skill)
+            @foreach($announcementId->skills as $skill)
                 <li class="skill-item">{{ $skill->name }}</li>
             @endforeach
         </ul>
         <h3 class="location-heading">Location:</h3>
-        <p class="location-item">{{ $announcement->location }}</p>
+        <p class="location-item">{{ $announcementId->location }}</p>
     </div>
     @if (auth()->user()->role->name == 'candidate')
     <!-- Форма для отправки отклика -->
     <div class="reply-form">
-        <form action="{{ route('announcements.reply', $announcement) }}" method="post">
+        <form action="{{ route('announcements.reply', $announcementId) }}" method="post">
             @csrf
             <input type="text" name="message_content" placeholder="Type your message">
             <button type="submit">Respond</button>

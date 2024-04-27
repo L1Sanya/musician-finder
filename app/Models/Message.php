@@ -45,4 +45,13 @@ class Message extends Model
         return $this->where('response_id', $responseId)->get();
     }
 
+    public static function sendMessage($senderId, $receiverId, $responseId, $content): void
+    {
+        Message::create([
+            'sender_id' => $senderId,
+            'receiver_id' => $receiverId,
+            'response_id' => $responseId,
+            'content' => $content,
+        ]);
+    }
 }

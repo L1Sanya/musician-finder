@@ -18,7 +18,7 @@ class RabbitMqService
      */
     public function __construct()
     {
-        $this->connection = new AMQPStreamConnection('rabbitmq', 5672, 'user', 'user');
+        $this->connection = new AMQPStreamConnection('rabbitmq', 5672, env('RABBITMQ_USER'), env('RABBITMQ_PASSWORD'));
         $this->channel = $this->connection->channel();
     }
 

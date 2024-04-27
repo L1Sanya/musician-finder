@@ -104,13 +104,13 @@
 <div class="container">
     <h1>Announcements</h1>
     <br>
-    <form action="{{ route('announcements.search') }}" method="GET" style="display: flex;">
+    <form action="{{ route('announcements.view') }}" method="GET" style="display: flex;">
         <input type="text" name="query" id="search" placeholder="Enter search term" autofocus style="flex: 1; padding: 10px; border-radius: 4px 0 0 4px; border: 1px solid #ccc;">
         <button type="submit" style="background-color: #007bff; color: #fff; border: none; border-radius: 0 4px 4px 0; padding: 10px 20px; cursor: pointer;">Search</button>
     </form>
 
     <div class="filter-form">
-        <form action="{{ route('announcements.filter') }}" method="GET">
+        <form action="{{ route('announcements.view') }}" method="GET">
             <label for="skill">Filter by Skill:</label>
             <select name="skill" id="skill">
                 <option value="">Select Skill</option>

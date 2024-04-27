@@ -15,30 +15,36 @@ use Illuminate\Routing\Redirector;
 
 class ResumeController extends Controller
 {
-    protected ResumeService $resumeService;
 
-    public function __construct(ResumeService $resumeService)
-    {
-        $this->resumeService = $resumeService;
-    }
-
-    public function index(): Factory|Application|View|\Illuminate\Contracts\Foundation\Application
+    public function createForm(): Factory|Application|View|\Illuminate\Contracts\Foundation\Application
     {
             $skills = Skill::all();
-            return view('custom-resume-form', compact('skills'));
+            return view('create-resume-form', compact('skills'));
     }
 
-    public function customResume(Request $request): Application|Redirector|\Illuminate\Contracts\Foundation\Application|RedirectResponse
+    public function createOrUpdate(Request $request): Application|Redirector|\Illuminate\Contracts\Foundation\Application|RedirectResponse
     {
         $userId = auth()->id();
-        $this->resumeService->createOrUpdateResume($userId, $request);
+        $resume = Resume::where('user_id', $userId)->first();
 
-        return redirect("/main")->with('success', 'You have created the post');
+        if ($resume) {
+            $this->deleteResume($resume);
+        }
+
+        $resume = Resume::create([
+            'user_id' => $userId,
+            'experience' => $request->input('experience'),
+            'info' => $request->input('info'),
+        ]);
+
+        $resume->skills()->attach($request->input('skills'));
+
+        return redirect("/my-resume")->with('success', 'You have created the post');
     }
 
-    public function showResume(): View|Factory|Application|Redirector|\Illuminate\Contracts\Foundation\Application|RedirectResponse
+    public function show(): View|Factory|Application|Redirector|\Illuminate\Contracts\Foundation\Application|RedirectResponse
     {
-        $resume = $this->resumeService->getUserResume(auth()->id());
+        $resume = Resume::where('user_id', auth()->id())->first();
 
         if ($resume) {
             return view('resume', compact('resume'));
@@ -47,7 +53,7 @@ class ResumeController extends Controller
         }
     }
 
-    public function showResumeForEmployer($resumeId): View|Application|Factory|\Illuminate\Contracts\Foundation\Application|RedirectResponse
+    public function showForEmployer($resumeId): View|Application|Factory|\Illuminate\Contracts\Foundation\Application|RedirectResponse
     {
             $resume = Resume::findOrFail($resumeId);
 
@@ -64,7 +70,6 @@ class ResumeController extends Controller
             $resume = Resume::where('user_id', $user_id)->first();
             if ($resume) {
                 $resume->skills()->detach();
-
                 $resume->delete();
 
                 return redirect("/main")->with('You have deleted the resume');
@@ -89,7 +94,18 @@ class ResumeController extends Controller
         ]);
 
         try {
-            $resume = $this->resumeService->updateResume($resumeId, $request);
+            $resume = Resume::findOrFail($resumeId);
+
+            if ($resume->user_id != auth()->id()) {
+                throw new Exception("You don't have permission to edit this resume.");
+            }
+
+            $resume->update([
+                'experience' => $request->input('experience'),
+                'info' => $request->input('info'),
+            ]);
+
+            $resume->skills()->sync($request->input('skills'));
 
             return redirect()->route('resume.show', $resume->id)->with('success', 'Resume updated successfully.');
         } catch (Exception $e) {

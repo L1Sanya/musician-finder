@@ -6,32 +6,19 @@ use Illuminate\Support\Facades\Http;
 
 class YougileApiService
 {
-    public function getCompanyId(): mixed
+    private string $token;
+
+    public function __construct()
     {
-        $data = [
-            "login" => env('YOUGILE_LOGIN'),
-            "password" => env('YOUGILE_PASSWORD'),
-            "name" => env('YOUGILE_NAME')
-        ];
-
-        $response = Http::withHeaders([
-            'Content-Type' => 'application/json',
-        ])->post('https://ru.yougile.com/api-v2/auth/companies', $data);
-
-        return $response->json()['content'][0]['id'];
+        $this->token = env('YOUGILE_API_TOKEN');
     }
 
-    public function getToken(): string
-    {
-        return env('YOUGILE_API_TOKEN');
-    }
-
-    public function getColumnsList(): mixed
+    public function getTasks()
     {
         $response = Http::withHeaders([
+            'Authorization' => "Bearer ".$this->token,
             'Content-Type' => 'application/json',
-            'Authorization' => "Bearer ".$this->getToken()
-        ])->get('https://ru.yougile.com/api-v2/columns');
+        ])->post('https://ru.yougile.com/api-v2/tasks');
 
         return $response->json();
     }
@@ -67,7 +54,7 @@ class YougileApiService
         ];
 
         $response = Http::withHeaders([
-            'Authorization' => "Bearer ".$this->getToken(),
+            'Authorization' => "Bearer ".$this->token,
             'Content-Type' => 'application/json',
         ])->post('https://ru.yougile.com/api-v2/tasks', $data);
 

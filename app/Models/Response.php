@@ -39,4 +39,12 @@ class Response extends Model
     {
         return $this->hasMany(Message::class);
     }
+
+    public static function createResponse($announcement, $user): Response
+    {
+        return Response::create([
+            'announcement_id' => $announcement->id,
+            'resume_id' => $user->resume->id,
+        ]);
+    }
 }
