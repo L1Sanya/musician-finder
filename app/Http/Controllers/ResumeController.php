@@ -22,7 +22,7 @@ class ResumeController extends Controller
             return view('create-resume-form', compact('skills'));
     }
 
-    public function createOrUpdate(Request $request): Application|Redirector|\Illuminate\Contracts\Foundation\Application|RedirectResponse
+    public function create(Request $request): Application|Redirector|\Illuminate\Contracts\Foundation\Application|RedirectResponse
     {
         $userId = auth()->id();
         $resume = Resume::where('user_id', $userId)->first();
@@ -64,7 +64,7 @@ class ResumeController extends Controller
             }
     }
 
-    public function deleteResume(): Application|Redirector|\Illuminate\Contracts\Foundation\Application|RedirectResponse
+    public function delete(): Application|Redirector|\Illuminate\Contracts\Foundation\Application|RedirectResponse
     {
             $user_id = auth()->id();
             $resume = Resume::where('user_id', $user_id)->first();
