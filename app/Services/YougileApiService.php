@@ -7,10 +7,12 @@ use Illuminate\Support\Facades\Http;
 class YougileApiService
 {
     private string $token;
+    private string $url;
 
-    public function __construct()
+    public function __construct(string $token, string $url)
     {
-        $this->token = env('YOUGILE_API_TOKEN');
+        $this->token = $token;
+        $this->url = $url;
     }
 
     public function getTasks()
@@ -18,7 +20,7 @@ class YougileApiService
         $response = Http::withHeaders([
             'Authorization' => "Bearer ".$this->token,
             'Content-Type' => 'application/json',
-        ])->post('https://ru.yougile.com/api-v2/tasks');
+        ])->post("$this->url" . "/tasks");
 
         return $response->json();
     }
@@ -56,7 +58,7 @@ class YougileApiService
         $response = Http::withHeaders([
             'Authorization' => "Bearer ".$this->token,
             'Content-Type' => 'application/json',
-        ])->post('https://ru.yougile.com/api-v2/tasks', $data);
+        ])->post("$this->url" . "/tasks", $data);
 
         return $response->json();
     }
